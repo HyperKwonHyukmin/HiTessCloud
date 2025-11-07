@@ -1,0 +1,7 @@
+InstallProgram/
+*.bat
+.idea/
+MongoDB.txt
+CodeBackUp/
+EngineeringPrograms/
+userConnection/

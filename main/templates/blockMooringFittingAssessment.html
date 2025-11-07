@@ -1,0 +1,147 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+<main class="main">  
+  {% include "sideMenu.html" %}
+
+  <div class="fileImport">  
+    <div class="fileImportContainer">
+      <a href="#none" onclick="openModal();">프로그램 사용 가이드</a>
+      <h1>Mooring Fitting 구조 안정성 평가 프로그램</h1>
+      <p>Mooring Fitting 구조를 생성할 CSV 파일을 선택하세요, </p>
+      <form id="fileImportForm" action="/beam/mooringFitting" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="file1">Data CSV 파일 선택 <span style="color: red">*</span></label>
+          <input type="file" id="file1" name="file1" accept=".csv" required>
+          <p id="nodeFileNameDisplay" style="font-size: 13px; color: #555; margin-top: 5px;">선택된 파일 없음</p>
+
+          <label for="file2" style="margin-top: 15px; display: block;">Data Load CSV 파일 선택 (Winch 하중) <span style="color: red">*</span></label>
+          <input type="file" id="file2" name="file2" accept=".csv" required>
+          <p id="elementFileNameDisplay" style="font-size: 13px; color: #555; margin-top: 5px;">선택된 파일 없음</p>
+
+        </div>
+        <button type="submit">프로그램 실행</button>
+      </form>          
+    </div>
+  </div>
+</main>
+
+<!-- 프로그램 사용 가이드 모달 창 -->
+<!-- 모달 배경 -->
+<div id="modal-backdrop" class="modal-backdrop"></div>
+
+<!-- 모달 본체 -->
+<div id="modal-notice" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-content">
+    <a href="#none" class="btn-close" onclick="closeModal();">×</a>
+    <div class="modal-body">
+      <h2 id="modalTitle">프로그램 사용 가이드</h2>
+      <p>프로그램 사용 가이드 설명 예정</p>
+      <a class="modal_close" href="#none" onclick="closeModal();">창 닫기</a>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('modal-notice');
+    const backdrop = document.getElementById('modal-backdrop');
+
+    function openModal() {
+      if (!modal || !backdrop) return;
+      modal.classList.add('active');
+      backdrop.classList.add('active');
+    }
+
+    function closeModal() {
+      if (!modal || !backdrop) return;
+      modal.classList.remove('active');
+      backdrop.classList.remove('active');
+    }
+
+    // 외부 클릭으로 닫기
+    backdrop.addEventListener('click', closeModal);
+
+    // ESC 키로 닫기
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // 외부에서도 접근 가능하게 등록
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+  const nodeFileInput = document.getElementById('file1');
+  const nodeFileNameDisplay = document.getElementById('nodeFileNameDisplay');
+  const elementFileInput = document.getElementById('file2');
+  const elementFileNameDisplay = document.getElementById('elementFileNameDisplay');
+
+  nodeFileInput.addEventListener('change', function () {
+    if (nodeFileInput.files.length > 0) {
+      nodeFileNameDisplay.textContent = `선택된 파일: ${nodeFileInput.files[0].name}`;
+    } else {
+      nodeFileNameDisplay.textContent = '선택된 파일 없음';
+    }
+  });
+
+  elementFileInput.addEventListener('change', function () {
+    if (elementFileInput.files.length > 0) {
+      elementFileNameDisplay.textContent = `선택된 파일: ${elementFileInput.files[0].name}`;
+    } else {
+      elementFileNameDisplay.textContent = '선택된 파일 없음';
+    }
+  });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const menuButtons = document.querySelectorAll('.sidebar ul > li > a[role="button"]');
+
+  menuButtons.forEach(button => {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      const parentLi = this.parentElement;
+      const submenuId = this.getAttribute('aria-controls');
+      const submenu = document.getElementById(submenuId);
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+      // 모든 메뉴 닫기
+      document.querySelectorAll('.sidebar ul > li').forEach(li => {
+        li.classList.remove('open');
+        const link = li.querySelector('a[role="button"]');
+        const targetId = link.getAttribute('aria-controls');
+        const ul = document.getElementById(targetId);
+        link.setAttribute('aria-expanded', 'false');
+        if (ul) ul.setAttribute('aria-hidden', 'true');
+      });
+
+      // 클릭한 메뉴가 원래 닫혀 있었으면 열기
+      if (!isExpanded) {
+        parentLi.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+        if (submenu) submenu.setAttribute('aria-hidden', 'false');
+      }
+    });
+  });
+
+  // 페이지 로드시 Truss 자동 열기
+  const trussLink = document.querySelector('a[aria-controls="submenu-beam"]');
+  if (trussLink) {
+    const trussLi = trussLink.parentElement;
+    const submenu = document.getElementById('submenu-beam');
+
+    trussLi.classList.add('open');
+    trussLink.setAttribute('aria-expanded', 'true');
+    if (submenu) submenu.setAttribute('aria-hidden', 'false');
+  }
+});
+
+
+
+</script>
+
+{% endblock %}

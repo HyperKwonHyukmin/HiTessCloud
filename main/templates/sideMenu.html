@@ -1,0 +1,54 @@
+
+<div class="sidebar">
+  <h2>Assessment Menu</h2>
+  <ul>
+    <li class="{% if request.path.startswith('/beam') %}open{% endif %}">
+      <a href="#none" role="button"
+         aria-expanded="{% if request.path.startswith('/beam') %}true{% else %}false{% endif %}"
+         aria-controls="submenu-beam">
+        Beam <span class="arrow">&#9654;</span>
+      </a>
+      <ul id="submenu-beam" aria-hidden="{% if request.path.startswith('/beam') %}false{% else %}true{% endif %}">
+        <li><a href="/beam/mooringFitting">Mooring Fitting 구조 안정성 평가</a></li>
+        <li><a href="#none">추가 예정</a></li>
+      </ul>
+    </li>
+
+    <li class="{% if request.path.startswith('/truss') %}open{% endif %}">
+      <a href="#none" role="button"
+         aria-expanded="{% if request.path.startswith('/truss') %}true{% else %}false{% endif %}"
+         aria-controls="submenu-truss">
+        Truss <span class="arrow">&#9654;</span>
+      </a>
+      <ul id="submenu-truss" aria-hidden="{% if request.path.startswith('/truss') %}false{% else %}true{% endif %}">
+        <li><a href="/truss/trussModelBuilder">Truss 해석 모델 구축</a></li>
+        <li><a href="/truss/trussAssessment">Truss 구조 안정성 평가</a></li>
+        <li><a href="#none">추가 예정</a></li>
+      </ul>
+    </li>
+
+    <li class="{% if request.path.startswith('/pipe') %}open{% endif %}">
+      <a href="#none" role="button"
+         aria-expanded="{% if request.path.startswith('/pipe') %}true{% else %}false{% endif %}"
+         aria-controls="submenu-pipe">
+        PSA <span class="arrow">&#9654;</span>
+      </a>
+      <ul id="submenu-pipe" aria-hidden="{% if request.path.startswith('/pipe') %}false{% else %}true{% endif %}">
+        <li><a href="/pipe/FuelLine">Double Walled Fuel Line</a></li>
+        <li><a href="/#none">추가 예정</a></li>
+      </ul>
+    </li>
+
+    <li class="{% if request.path.startswith('/module') %}open{% endif %}">
+      <a href="#none" role="button"
+         aria-expanded="{% if request.path.startswith('/module') %}true{% else %}false{% endif %}"
+         aria-controls="submenu-module">
+        Module Unit <span class="arrow">&#9654;</span>
+      </a>
+      <ul id="submenu-module" aria-hidden="{% if request.path.startswith('/module') %}false{% else %}true{% endif %}">
+        <li><a href="#none">추가 예정</a></li>
+        <li><a href="#none">추가 예정</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,153 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+<main class="main">  
+  {% include "sideMenu.html" %} 
+
+  <div class="intro-wrap">
+    <div class="intro-header">
+      <h1>배관 구조 해석 프로그램</h1>
+      <p>{{ session['userDept'] }} {{ session['userName'] }} {{ session['userPos'] }}님, 사용할 기능을 선택하세요.</p>
+    </div>
+  
+    <div class="intro-grid">
+      <!-- 해석 모델 구축 -->
+      <div class="intro-box">
+        <h2>Double Walled Fuel Line</h2>
+        <p>CSV 파일을 기반으로 배관 해석 모델을 자동 생성합니다.</p>
+        <div class="intro-actions">
+          {% if 'Truss 해석 모델 구축' in session['permissions'] and session['permissions']['Truss 해석 모델 구축'] == True %}
+            <a href="/pipe/FuelLine" class="go-btn">바로가기</a>
+          {% elif 'Truss 해석 모델 구축' in session['permissions'] %}
+            <span class="pending-badge">승인 대기중</span>
+          {% else %}
+            <form method="POST" action="/member/requestPermissions" style="display:inline;">
+              <input type="hidden" name="program_name" value="Truss 해석 모델 구축">
+              <button type="submit" class="req-btn">권한 신청</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+
+    
+    </div>
+  </div>
+</main>
+
+<!-- 프로그램 사용 가이드 모달 창 -->
+<!-- 모달 배경 -->
+<div id="modal-backdrop" class="modal-backdrop"></div>
+
+<!-- 모달 본체 -->
+<div id="modal-notice" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-content">
+    <a href="#none" class="btn-close" onclick="closeModal();">×</a>
+    <div class="modal-body">
+      <h2 id="modalTitle">프로그램 사용 가이드</h2>
+      <p>프로그램 사용 가이드 설명 예정</p>
+      <a class="modal_close" href="#none" onclick="closeModal();">창 닫기</a>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('modal-notice');
+    const backdrop = document.getElementById('modal-backdrop');
+
+    function openModal() {
+      if (!modal || !backdrop) return;
+      modal.classList.add('active');
+      backdrop.classList.add('active');
+    }
+
+    function closeModal() {
+      if (!modal || !backdrop) return;
+      modal.classList.remove('active');
+      backdrop.classList.remove('active');
+    }
+
+    // 외부 클릭으로 닫기
+    backdrop.addEventListener('click', closeModal);
+
+    // ESC 키로 닫기
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // 외부에서도 접근 가능하게 등록
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+  const file1 = document.getElementById('file1');
+  const nodeFileNameDisplay = document.getElementById('nodeFileNameDisplay');
+
+  file1.addEventListener('change', function () {
+    if (file1.files.length > 0) {
+      nodeFileNameDisplay.textContent = `선택된 파일: ${file1.files[0].name}`;
+    } else {
+      nodeFileNameDisplay.textContent = '선택된 파일 없음';
+    }
+  });
+
+  file2.addEventListener('change', function () {
+    if (file2.files.length > 0) {
+      elementFileNameDisplay.textContent = `선택된 파일: ${file2.files[0].name}`;
+    } else {
+      elementFileNameDisplay.textContent = '선택된 파일 없음';
+    }
+  });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const menuButtons = document.querySelectorAll('.sidebar ul > li > a[role="button"]');
+
+  menuButtons.forEach(button => {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      const parentLi = this.parentElement;
+      const submenuId = this.getAttribute('aria-controls');
+      const submenu = document.getElementById(submenuId);
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+      // 모든 메뉴 닫기
+      document.querySelectorAll('.sidebar ul > li').forEach(li => {
+        li.classList.remove('open');
+        const link = li.querySelector('a[role="button"]');
+        const targetId = link.getAttribute('aria-controls');
+        const ul = document.getElementById(targetId);
+        link.setAttribute('aria-expanded', 'false');
+        if (ul) ul.setAttribute('aria-hidden', 'true');
+      });
+
+      // 클릭한 메뉴가 원래 닫혀 있었으면 열기
+      if (!isExpanded) {
+        parentLi.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+        if (submenu) submenu.setAttribute('aria-hidden', 'false');
+      }
+    });
+  });
+
+  // 페이지 로드시 Truss 자동 열기
+  const trussLink = document.querySelector('a[aria-controls="submenu-pipe"]');
+  if (trussLink) {
+    const trussLi = trussLink.parentElement;
+    const submenu = document.getElementById('submenu-pipe');
+
+    trussLi.classList.add('open');
+    trussLink.setAttribute('aria-expanded', 'true');
+    if (submenu) submenu.setAttribute('aria-hidden', 'false');
+  }
+});
+
+
+
+</script>
+
+{% endblock %}

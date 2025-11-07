@@ -1,0 +1,12 @@
+## 1. Module Unit Point 형태 유효성 확인 : OK
+
+## 2. Modult Unit 자세 안정성 평가 
+- 해당 Unit Point에서 자세 안정성 평가 : OK 
+
+## 3. 구조 안정성 평가 
+1) 최대 변형 : 111.3mm 
+2) 응력 평가            
+  ElementID:        9         
+  Stress:           83.0MPa
+  SafetyFactor:     2.7       
+  AssessmentResult: Pass      

@@ -1,0 +1,42 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+
+
+<div class="login-wrapper">
+  <form action="/member/login" method="POST" class="login-form">    
+    <h2 class="login-title">Log in</h2>
+    <p class="login-subtitle">Hi-TESS CLOUD에 오신 걸 환영합니다.<br>사번을 입력해 로그인해 주세요.</p>
+
+    <div class="input-group">
+      <label for="company">회 사</label>
+      <select name="company" id="company" required>
+        <option value="HD 현대중공업" selected>HD 현대중공업</option>
+        <option value="HD 현대삼호">HD 현대삼호</option>
+        <option value="기타">기타</option>
+      </select>
+    </div>
+    
+    <div class="input-group">
+      <label for="id">사 번</label>
+      <input type="text" name="id" id="id" placeholder="사번을 입력하세요" required autofocus autocomplete="off">
+    </div>
+
+    {% if next_url %}
+      <input type="hidden" name="next_url" value="{{ next_url }}">
+    {% endif %}
+
+    <button type="submit" class="btn-login">로그인</button>
+
+    <p class="login-footer">
+      회원이 아니신가요? <a href="/member/join">회원가입</a><br>
+      문의처 : kwonhyukmin@hd.com
+    </p>
+  </form>
+</div>
+
+
+
+        
+{% endblock %}
+    

@@ -1,0 +1,64 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+
+<div class="join-wrapper">
+  <form action="/member/join" method="POST" class="join-form">
+    <h2 class="join-title">회원가입 정보 확인</h2>
+    <p class="join-subtitle">입력된 정보를 확인 후 가입을 완료해 주세요.</p>
+    
+    <div class="input-group">
+      <label for="company">회 사</label>
+      <select name="company" id="company" required>
+        <option value="HD 현대중공업" selected>HD 현대중공업</option>
+        <option value="HD 현대삼호">HD 현대삼호</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="id">사 번</label>
+      <input type="text" name="id" id="id" readonly value="{{ userData.userID }}">
+    </div>
+
+    <div class="info-group">
+      <label>이 름</label>
+      <input type="text" name="name" readonly value="{{ userData.userName }}">
+    </div>
+
+    <div class="info-group">
+      <label>직 급</label>
+      <input type="text" name="level" readonly value="{{ userData.userPos }}">
+    </div>
+
+    <div class="info-group">
+      <label>부 서</label>
+      <input type="text" name="division" readonly value="{{ userData.userDept }}">
+    </div>
+
+    <p class="join-notice">※ 관리자 승인 후 프로그램 이용이 가능합니다.</p>
+
+    <input type="hidden" name="hidden" value="join">
+    <button type="submit" class="btn-join">가입 신청</button>
+  </form>
+</div>
+
+<script>
+  const booseo = document.querySelector('#booseo');
+  const ETC_booseo = document.querySelector('#ETC_booseo');
+
+  window.addEventListener('change', ()=> {
+    const booseo_value = booseo.value;
+    console.log(booseo_value);
+    if (booseo_value == 'ETC') {
+      ETC_booseo.disabled = false;
+    }else{
+      ETC_booseo.disabled = true;
+    }
+  })
+
+  
+
+</script>
+        
+{% endblock %}
+    

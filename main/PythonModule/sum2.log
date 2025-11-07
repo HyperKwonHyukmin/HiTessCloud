@@ -1,0 +1,160 @@
+MSC Nastran V2017.1 (Intel Windows 10 Enterprise 6.2 9200) Control File: 
+----------------------------------------------------------------- 
+$ sysfield=SCR*(RAW=YES,BUFFIO=YES,wnum=16,wsize=16mb) $(c:/msc.software/msc_nastran/20171/conf/nast20171.rcf[1])
+$ sysfield=DBALL(RAW=YES,BUFFIO=YES,wnum=16,wsize=16mb) $(c:/msc.software/msc_nastran/20171/conf/nast20171.rcf[2])
+Nastran BUFFSIZE=65537 $(c:/msc.software/msc_nastran/20171/conf/nast20171.rcf[5])
+JID='c:/users/hhi/khm/hitesscloud_flask/main/pythonmodule/sum2.bdf'
+OUT='./sum2'
+MEM=8539602944      $ WORDS
+MACH='Intel'
+OPER='Windows 10 Enterprise'
+OSV='6.2 9200'
+MODEL='P5-4/2555 (HHISW170658)'
+NPROC='40'
+CONFIG=15
+NPROC=40
+symbol=DELDIR='c:/msc.software/msc_nastran/20171/msc20171/nast/del' $(program default)
+symbol=DEMODIR='c:/msc.software/msc_nastran/20171/msc20171/nast/demo' $(program default)
+symbol=LM_NO_SNMP=1 $(c:/msc.software/msc_nastran/20171/conf/nast20171.rcf[8])
+symbol=SSSALTERDIR='c:/msc.software/msc_nastran/20171/msc20171/nast/sssalter' $(program default)
+symbol=TPLDIR='c:/msc.software/msc_nastran/20171/msc20171/nast/tpl' $(program default)
+SDIR='c:/scratch/sum2.T20032_17'
+DBS='c:/scratch/sum2.T20032_17'
+SCR='yes'
+SMEM=100
+BPOOL=64811.0MB
+DMPMEM=estimate
+NEWDEL='c:/msc.software/msc_nastran/20171/msc20171/win64i8/sss'
+DEL='MSCDEF'
+DML=MSCDEF
+SDL=MSCDEF
+AUTH='27500@10.4.99.35'
+AUTHQUE=20
+MSGCAT='c:/msc.software/msc_nastran/20171/msc20171/win64i8/analysis.msg'
+MSGDEST='f06'
+NEWS='c:/msc.software/msc_nastran/20171/msc20171/nast/news.txt'
+----------------------------------------------------------------- 
+MSC_ISHELLPATH=C:\MSC.Software\MSC_Nastran\20171\msc20171\actran\win64\Actran_17.1.b.97631\bin;C:\MSC.Software\MSC_Nastran\20171\msc20171\nast; 
+MSC_JIDPATH= 
+PATH=c:\msc.software\msc_nastran\20171\msc20171\win64i8;c:\msc.software\msc_nastran\20171\msc20171\win64i8\nCode\bin;c:\msc.software\msc_nastran\20171\msc20171\win64i8\nvidia;c:\msc.software\msc_nastran\20171\msc20171\win64i8\lib;c:\msc.software\msc_nastran\20171\msc20171\win64i8;C:\SIMULIA\Commands;C:\Program Files\Microsoft MPI\Bin\;C:\Oracle11g32\product\11.2.0\client_1\bin;C:\Users\A477273\AppData\Local\Programs\Python\Python312;C:\Users\A477273\AppData\Local\Programs\Python\Python312\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Users\HHI\AppData\Local\Microsoft\WindowsApps;C:\MSC.Software\MSC_Nastran\20171\bin\;C:\Program Files\Oracle Client for Microsoft Tools\;C:\Users\CF40_Admin\AppData\Local\Microsoft\WindowsApps; 
+SCA_SERVICE_CATALOG=c:\msc.software\msc_nastran\20171\msc20171\res\SCAServiceCatalog.xml 
+SCA_RESOURCE_DIR=c:\msc.software\msc_nastran\20171\msc20171\res 
+Cmd Line:    C:\MSC.Software\MSC_Nastran\20171\msc20171\win64i8\nastran.exe C:\Users\HHI\KHM\HiTessCloud_Flask\main\PythonModule\SUM2.bdf 
+Current Dir: C:\Users\HHI\KHM\HiTessCloud_Flask\main\PythonModule 
+Time Cmd:    c:\msc.software\msc_nastran\20171\msc20171\win64i8\msctime 
+Executable:  c:\msc.software\msc_nastran\20171\msc20171\win64i8\analysis.exe 
+Arch= Kywd:  [Not specified]  
+MSC_MSG:     stderr  
+FPE:         yes  
+----------------------------------------------------------------- 
+Current resource limits:
+ Physical memory:                   130304 MB
+ Physical memory available:         101284 MB
+ Paging file size:                  148736 MB
+ Paging file size available:        110960 MB
+ Virtual memory:                 134217727 MB
+ Virtual memory available:       134213457 MB
+----------------------------------------------------------------- 
+System configuration:
+ Hostname:         HHISW170658.HDShipGroup.HHI.co.kr
+ Architecture:     win64i8
+ Platform:         Intel Windows 10 Enterprise 6.2 9200 (Windows Compute Cluster)
+ Model:            P5-4/2555
+ Clock freq.:      2874 MHz
+ Number of CPUs:   40
+ Executable:       standard
+ Raw model ID:     15
+ Config number:    15
+ Physical memory:  130304 MB
+ Virtual memory:   148736 MB
+ Numeric format:   64-bit little-endian IEEE.
+ Bytes per word:   8
+ Disk block size:  512 bytes (64 words)
+ Remote shell cmd: "c:/msc.software/msc_nastran/20171/msc20171/win64i8/mscrmtcmd.exe" (Windows non-CCS nodes, UNIX)
+                   <ccs_cmd> (Windows CCS nodes)
+----------------------------------------------------------------- 
+MSC Nastran started  Thu Aug 21 11:36:19 ¢C 202 
+ 11:36:21  Beginning Analysis
+SCA Kernel 18.3.439984 successfully initialized
+BLAS/LAPACK .dll "c:\msc.software\msc_nastran\20171\msc20171\win64i8\libimalloc.dll" has been loaded.
+BLAS/LAPACK .dll "c:\msc.software\msc_nastran\20171\msc20171\win64i8\mkl_core.dll" has been loaded.
+BLAS/LAPACK .dll "c:\msc.software\msc_nastran\20171\msc20171\win64i8\mkl_intel_thread.dll" has been loaded.
+BLAS/LAPACK .dll "c:\msc.software\msc_nastran\20171\msc20171\win64i8\mkl_rt.dll" has been loaded.
+BLAS/LAPACK .dll "c:\msc.software\msc_nastran\20171\msc20171\win64i8\MSCblas.dll" has been loaded.
+
+ 11:36:26  MSC Authorization Information - System Attributes (1004, 0)
+ 11:36:26  -----------------------------------------------------------
+  Date:          Thu Aug 21 11:36:26 2025
+  MSC Id:        004e01fd9898 (ethernet) (Intel)
+  Hostname:      HHISW170658 (user CF40_Admin, display HHIPD156053)
+  License files: 27500@10.4.99.35
+  CEID:          B3EE74DE-7C89C57C
+  User:          CF40_Admin
+  Display:       HHIPD156053
+  LAPI Version:  LAPI 10.1.8-3298 (FLEXlm 11.9.0.0)
+
+  * * * * * * * * * * * * * * * * * * * *
+  * * * * * * * * * * * * * * * * * * * *
+  * *                                 * *
+  * *   MSC Customer Entitlement ID   * *
+  * *        B3EE74DE-7C89C57C        * *
+  * *                                 * *
+  * * * * * * * * * * * * * * * * * * * *
+  * * * * * * * * * * * * * * * * * * * *
+
+ 11:36:31  MSC Authorization Information - Checkout Successful (1016, 0)
+ 11:36:31  -------------------------------------------------------------
+ 11:36:31  Acquired 1 license for MSC Nastran from license server on host 10.4.99.35
+
+
+Beginning bulk data processing using the IFPStar component.
+For more information on IFPStar, please see KB article KB8019200
+on our support pages, at http://simcompanion.mscsoftware.com.
+
+ 11:36:31  23702 records read from JID file "c:/users/hhi/khm/hitesscloud_flask/main/pythonmodule/sum2.bdf"
+
+Processing of bulk data entries is complete.
+
+ 11:36:34  Analysis started.
+ 11:36:34  Geometry access/verification to CAD part initiated (if needed).
+ 11:36:34  Geometry access/verification to CAD part successfully completed (if needed).
+ 11:36:34  Finite element model generation started.
+ 11:36:34  Finite element model generated 60828 degrees of freedom.
+ 11:36:34  Finite element model generation successfully completed.
+ 11:36:34  Application of Loads and Boundary Conditions to the finite element model started.
+ 11:36:36  Application of Loads and Boundary Conditions to the finite element model successfully completed.
+ 11:36:37  Solution of the system equations for linear statics started.
+ 11:36:37  Solution of the system equations for linear statics successfully completed.
+ 11:36:39  Linear static analysis completed.
+ 11:36:39  18 records read from JID file "c:/users/hhi/khm/hitesscloud_flask/main/pythonmodule/sum2.bdf"
+ 11:36:39  NSEXIT: EXIT(0)
+ 11:36:39  Analysis complete  0
+Real:       18.104 seconds ( 0:00:18.104)
+User:        3.796 seconds ( 0:00:03.796)
+Sys:         2.468 seconds ( 0:00:02.468)
+ ==================================================
+ OS:              6.2
+ OEM ID:         9
+ Number of processors:         40
+ Page size:         4096
+ Processor type:         8664
+ Minimum application address:         10000
+ Maximum application address:         fffeffff
+ Active processor mask:         4294967295
+ Nsocket:         1
+ Ncore:           40  ( 1 X 40 )
+ HyperThreading:  On
+ Ram:          130304 Mb
+ ==================================================
+ Time Summary                 CPU       Wall   ( Time in Seconds )
+ Input File                   2.0          2 
+ Miscellaneous                3.2          6 
+ -------------------------------------------
+ Total:                       5.2          8 
+ ==================================================
+ Consider using SMP = 40 ( The number of cores per socket )
+ =====================================================
+ Detailed performance information can be found in the 
+ "MSC Nastran High Performance Computing User's Guide"
+ =====================================================
+MSC Nastran finished Thu Aug 21 11:36:40 ¢C 202 

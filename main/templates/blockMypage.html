@@ -1,0 +1,277 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="mypage_container">
+  <div class="mypage1">
+    <p>My Page</p>
+    <hr>
+    <p>{{session['userDept']}} {{session['userName']}} {{session['userPos']}}님 </p>
+  </div> 
+  <div class="mypage2">
+    <div>
+      <p>로그인</p>
+      <p><span>{{userData_result.joinCNT}}</span>회</p>
+    </div>
+    <div>
+      <p>프로그램 사용</p>
+      <p><span>{{userData_result.analysisCNT}}</span>회</p>
+    </div>
+  </div> 
+  <div class="mypage3">
+    <div>
+      <p>프로그램 사용 기록</p>
+      <hr>
+    </div>
+    <div class="analysisRecords">
+      {% if analysisData|length > 0 %}
+      <table>
+  <thead>
+    <tr>
+      <th>수행날짜</th>
+      <th>프로그램</th>
+      <th>결과</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in analysisData %}
+    <tr>
+      <td>{{ data.analysisTime|formatdatetime }}</td>
+      <td>{{ data.analysisType }}</td>
+      <td>{{ data.status }}</td>
+      <td class="download">
+        {% if data.files %}
+          {% for file in data.files %}
+            <div>
+              <a href="{{ url_for('member.download', fileName='file') }}?file={{ file }}">
+                {{ file|fileNameParsing }}
+              </a>
+            </div>
+          {% endfor %}
+        {% else %}
+          없음
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+      <div class="pagenation">
+        {% if block_start-1 > 0 %}
+        <a class="before_next" href="{{url_for('member.member_mypage', page=block_start-1)}}">[이전]</a>
+        {% endif %}
+
+        {% for i in range(block_start, block_last + 1) %}
+          {% if i > last_page_num %}
+            <!-- {{i}} -->
+          {% else %}
+            {% if i==page %}
+              <b class="Current">{{i}}</b>
+            {% else %}
+              <a href="{{url_for('member.member_mypage', page=i)}}" class="notCurrent">{{i}}</a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {% if block_last < last_page_num %}
+        <a class="before_next" href="{{url_for('member.member_mypage', page=block_last+1)}}">[다음]</a>
+        {% endif %}
+      {% else %}
+      <h3>데이터가 없습니다</h3>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="statics_container">
+  <div>
+    <p>프로그램 사용 통계</p>
+    <hr>
+  </div>
+  <div class="filter-container">
+    <label for="timeUnit">Select Time Unit:</label>
+    <select id="timeUnit" onchange="updateTimeOptions()">
+      <option value="year">Year</option>
+      <option value="month">Month</option>
+      <option value="week">Week</option>
+      <option value="day">Day</option>
+    </select>
+
+    <label for="timeSelect">Select Time:</label>
+    <select id="timeSelect" onchange="updateChart()">
+      <!-- Options dynamically populated -->
+    </select>
+</div>
+
+<div class="chart-container">
+    <h2>Program Usage Statistics</h2>
+    <canvas id="myChart"></canvas>
+</div>
+</div>
+
+<script>
+    // 초기 차트 설정
+    const ctx = document.getElementById("myChart").getContext("2d");
+    let chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: [], // 데이터의 라벨
+            datasets: [] // 데이터셋
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    enabled: true // 툴팁 활성화
+                },
+                datalabels: {
+                    display: true, // 데이터를 표시
+                    align: "end", // 위치: 막대 위
+                    anchor: "end", // 기준점: 막대 상단
+                    formatter: (value) => value // 데이터 값 그대로 표시
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Number of Uses"
+                    }
+                }
+            }
+        },
+        plugins: [
+            {
+                id: 'datalabels', // 플러그인 추가
+                beforeDraw: function (chart) {
+                    const ctx = chart.ctx;
+                    chart.data.datasets.forEach(function (dataset, i) {
+                        const meta = chart.getDatasetMeta(i);
+                        meta.data.forEach(function (bar, index) {
+                            const data = dataset.data[index];
+                            ctx.fillStyle = "black"; // 텍스트 색상
+                            ctx.font = "12px Arial"; // 텍스트 폰트
+                            ctx.textAlign = "center"; // 텍스트 정렬
+                            ctx.fillText(data, bar.x, bar.y - 5); // 텍스트 위치
+                        });
+                    });
+                }
+            }
+        ]
+    });
+
+    function updateTimeOptions() {
+    const timeUnit = document.getElementById("timeUnit").value;
+    const timeSelect = document.getElementById("timeSelect");
+
+    console.log(`[updateTimeOptions] Selected Time Unit: ${timeUnit}`); // 디버깅용 로그
+
+    fetch("/member/mypage", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ time_unit: timeUnit, selected_time: null })
+    })
+        .then(response => {
+            console.log(`[updateTimeOptions] Fetch Status: ${response.status}`); // 응답 상태 로그
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("[updateTimeOptions] Response Data:", data); // 응답 데이터 로그
+            timeSelect.innerHTML = ""; // 기존 옵션 제거
+
+            // 키(날짜)를 내림차순 정렬
+            const keys = Object.keys(data).sort((a, b) => new Date(b) - new Date(a));
+
+            if (keys.length === 0) {
+                console.warn("[updateTimeOptions] No data found for the selected time unit."); // 경고 로그
+                return;
+            }
+
+            // 콤보박스 옵션 추가
+            keys.forEach(key => {
+                const option = document.createElement("option");
+                option.value = key;
+                option.textContent = key;
+                timeSelect.appendChild(option);
+            });
+
+            // 최신 데이터를 기본값으로 설정
+            timeSelect.value = keys[0];
+            console.log(`[updateTimeOptions] First Option Selected: ${keys[0]}`); // 첫 옵션 선택 로그
+
+            // 차트를 최신 데이터로 업데이트
+            updateChart();
+        })
+        .catch(error => {
+            console.error("[updateTimeOptions] Error fetching data:", error); // 에러 로그
+        });
+}
+
+function updateChart() {
+    const timeUnit = document.getElementById("timeUnit").value;
+    const selectedTime = document.getElementById("timeSelect").value;
+
+    console.log(`[updateChart] Selected Time Unit: ${timeUnit}, Selected Time: ${selectedTime}`); // 디버깅용 로그
+
+    fetch("/member/mypage", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ time_unit: timeUnit, selected_time: selectedTime })
+    })
+        .then(response => {
+            console.log(`[updateChart] Fetch Status: ${response.status}`); // 응답 상태 로그
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("[updateChart] Response Data:", data); // 응답 데이터 로그
+
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+
+            if (labels.length === 0 || values.length === 0) {
+                console.warn("[updateChart] No data available for chart update."); // 경고 로그
+                return;
+            }
+
+            const colors = labels.map((_, i) => `hsl(${(i * 60) % 360}, 70%, 60%)`);
+
+            chart.data.labels = labels;
+            chart.data.datasets = [
+                {
+                    label: `Usage for ${selectedTime}`,
+                    data: values,
+                    backgroundColor: colors,
+                    borderWidth: 1
+                }
+            ];
+            chart.update();
+
+            console.log("[updateChart] Chart updated successfully."); // 성공 로그
+        })
+        .catch(error => {
+            console.error("[updateChart] Error updating chart:", error); // 에러 로그
+        });
+}
+
+window.onload = () => {
+    console.log("[window.onload] Initializing time options and chart."); // 초기화 로그
+    updateTimeOptions(); // 기본 옵션 설정
+};
+
+
+</script>
+        
+{% endblock %}
+    

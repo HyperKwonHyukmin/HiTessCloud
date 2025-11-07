@@ -1,0 +1,206 @@
+.modal {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  display: none;
+}
+.modal-content {
+  background-color: #fff;
+  width: 1100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  padding: 50px;
+  animation: slidefade 0.35s linear;
+}
+.modal_btn {
+  cursor: pointer;
+  display: inline-block;
+  display: block;
+  width: 200px;
+  text-decoration: none;
+  background-color: #1363DF;
+  color:#fff;
+  font-size: 20px;
+  border-radius: 5px;
+  text-align: center;
+  height:50px;
+  line-height: 50px;  
+  transition: 0.2s;
+  border: none;
+  margin-bottom: 50px;
+  font-family: 'NotoSansKR_Bold';
+  transition: 0.35s;
+}
+.modal_btn:hover {
+  background-color: #47B5FF;
+}
+.desc_container {
+  height: 200px;
+}
+.desc_container .desc1 {
+  font-size: 2em;
+  font-family: 'NotoSansKR_Bold';
+}
+.desc_container .desc2 {
+  font-size: 1.4em; 
+  font-family: 'NotoSansKR_Bold';
+  padding: 10px 0;
+  text-align: left;
+}
+.desc_container .desc3 {
+  font-family: 'NotoSansKR';
+  font-size: 1.2em; 
+  padding-top: 5px;
+  text-align: left;
+}
+.desc_container .desc3 ul {
+  margin-left: 30px;
+  list-style-type: disc;
+}
+.img_container {
+}
+.bracket_img,.post_img {
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+.btn-close {
+  font-size: 2.5em;
+  color: #999;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+}
+.modal.active {
+  display: block;
+}
+@keyframes slidefade {
+  0% {
+    opacity: 0;
+    margin-top: -100px;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+
+/* input output 테이블 */
+.table_container_calc_post{
+  display: flex;
+  justify-content: space-around;
+  /* border: 1px solid crimson; */
+}
+.post_table_1_calc_post, .post_table_2_calc_post {
+  border-collapse: collapse;  
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);  
+  margin-right: 20px;;
+}
+.post_table_2_calc_post {
+  height: 320px;
+}
+.post_table_1_calc_post caption, .post_table_2_calc_post caption {
+  text-align: center;
+  color: #fff;
+  padding: 10px 0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 20px;  
+  /* border: 1px solid crimson; */
+}
+.post_table_1_calc_post caption{
+  background-color: #293649;
+}
+.post_table_2_calc_post caption {
+  background-color: #4FA095;
+}
+.group_name_calc_post {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 16px;
+  width: 180px;
+  font-family: 'Montserrat_SemiBold';
+}
+.value_name_calc_post {
+  border: 1px solid #ddd;
+  text-align: center;
+  width: 300px;
+  height: 50px;
+  padding: 5px 0px;
+  color: rgba(0, 0, 0, 0.267);
+  font-size: 17px;
+  /* border: 1px solid red; */
+}
+.input_value_box {
+  text-align: center; 
+  outline: none;
+}
+input[type='text'] {
+  width : 130px;
+  display: inline-block;  
+  margin: 0;
+  line-height: 30px;
+  font-size: 16px;
+  text-align: center;  
+  margin-left: 8px;
+  outline: none;
+  border-radius: 3px;
+}
+.not_need_input_calc_post {
+  border: 1px solid #ddd;
+  color: #ddd;
+}
+.need_input_calc_post {
+  border: 1px solid #000;
+  color: #000;
+  transition: 0.1s;
+}
+.need_input_calc_post:hover {
+  border: 3px solid #364F6B ;
+}
+.need_input_calc_post_text {
+  color: #000;
+}
+.unit_name {
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 10px;
+  font-size: 12px;
+}
+.need_input_text_calc_post {
+  color: #364F6B;
+}
+.result_name {
+  color: #4FA095;
+}
+.calculate_btn_calc_post {
+  display: block;
+  width: 500px;
+  text-decoration: none;
+  background-color: #293649;
+  color:#fff;
+  font-size: 20px;
+  border-radius: 5px;
+  text-align: center;
+  margin: 50px auto;
+  height:50px;
+  line-height: 50px;  
+  transition: 0.2s;
+  border: none;
+}
+.calculate_btn_calc_post:hover {
+  background-color: #4FA095;
+}
+.calculate_btn_calc_post:active {
+  transform: scale(0.8);
+}

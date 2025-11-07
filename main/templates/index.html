@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <!-- Flask 개발 버전 -->
+  <script src="{{url_for('static', filename='js/all.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/jquery-3.5.1.min.js')}}"></script>
+  <!-- slick.js -->
+  <script src="{{url_for('static', filename='js/slick/slick.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/custom_jquery.js')}}"></script>
+  <!-- 슬라이딩 제이쿼리 -->
+  <!-- <script src="js/jquery.scrollTo.min.js"></script> -->
+  <link rel="stylesheet" href="{{url_for('static', filename='js/slick/slick.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='js/slick/slick-theme.css')}}">
+  <!-- my css -->
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style_index.css')}}">
+
+  <title>Hi-TESS CLOUD</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="banner">
+        <div class="lnb">
+        {% if session['userID'] %}
+        <span>{{session['userName']}} {{session['userPos']}}님</span>
+        <a href="/member/logout">Log out</a>
+        <a href="/member/myAccess">Program Access</a>
+        <a href="/member/mypage">My page</a>
+        {% else %}
+        <a href="/member/login">Log in</a>
+        <a href="/member/join">Join</a>
+        {% endif %}
+        </div>
+      </div>
+      <nav>
+        <div class="logo">
+          <img src="{{ url_for('static', filename='images/HiTESS_logo.png') }}" class="HiTessLogo">
+
+          <p>Hi-TESS CLOUD</p>
+        </div>
+        <ul class="gnb">
+          <li><a href="/">HOME</a></li>
+          <li><a href="/#vision">VISION</a></li>
+          <li><a href="/#assessment">ASSESSMENT</a></li>
+          <li><a href="/#achievement">ACHIEVEMENTS</a></li>
+          <li><a href="/#notice">NOTICE</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="intro">
+      <div class="inner">
+        <div class="heading">
+          <h1>Hi-TESS <span>CLOUD</span></h1>
+          <p>Total Engineering Solutions for Ship design and construction</p>
+        </div>
+      </div>
+    </main>
+    <section class="vision" id="vision">
+      <div class="inner">
+        <div class="vision-content">
+          <div class="desc">
+            <h2>Vision & Mission of Hi-TESS</h2>
+            <hr>
+            <p>
+              Streamline your shipbuilding process with Hi-TESS <br>
+              Automation that eliminates errors, enhancing efficiency<br>
+              Comprehensive solutions for ship design and construction.<br>
+              From hull structures to outfitting, all in one platform.<br>
+              Advanced algorithms for flawless data management<br>
+              User-friendly tools designed for engineers<br>
+              Seamless integration into your existing workflows<br>
+              Innovative and scalable solutions for shipbuilders           
+            </p>
+          </div>
+          <div class="photo">
+            <img src="{{url_for('static', filename='images/truss.jpg')}}">
+          </div>
+        </div>
+      </div>
+    </section>    
+    <section class="assessment" id="assessment">
+      <div class="inner">
+        <div class="assessment-content">    
+          <h2>Structural Assessment Menu</h2>
+          <hr>
+          <div class="items">
+            <a href="/beam/intro" class="item">
+              <div class="up-image">
+                <img src="{{url_for('static', filename='images/Beam_menu.jpg')}}" alt="">
+              </div>
+              <div class="down-desc">
+                <span class="badge1">AM-Based FEM</span>
+                <h3>1D Beam</h3>
+                <p>
+                  1D Beam FEM is to identify structure characteristics of Support, Platform and other 1D Beam structures to predict its stress and displacement with FEM Analsysis. The assessment results will be used to present appropriate counter-measures to avoid excessive stress and displacement. 
+                </p>               
+              </div>
+            </a>
+            <a href="/truss/intro" class="item">
+              <div class="up-image">
+                <img src="{{url_for('static', filename='images/truss_menu.jpg')}}" alt="">
+              </div>
+              <div class="down-desc">
+                <span class="badge1">AM-Based FEM</span>
+                <h3>Truss</h3>
+                <p>
+                  Truss analysis automation for LNG carriers enhances safety and efficiency. Used in LNG tank insulation, Truss structures require stability checks under different conditions. Automation streamlines FE modeling, enables quick evaluations during design changes, and stores results for future applications.
+                </p>                
+              </div>
+            </a>
+            <a href="/pipe/intro" class="item">
+              <div class="up-image">
+                <img src="{{url_for('static', filename='images/piping.png')}}" alt="">
+              </div>
+              <div class="down-desc">
+                <span class="badge1">AM-Based FEM</span>
+                <h3>PSA</h3>
+                <p>
+                  Piping stress analysis is performed in accordance with relevant codes such as ASME B31.3 to ensure that the piping system is structurally safe and functionally sound under various loading conditions, such as internal pressure, temperature changes, support configurations, and external forces 
+                </p>                
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>        
+    <section class="achievement" id="achievement">
+      <div class="inner">
+        <div class="achievement-content">
+          <p>What We Have Done</p>
+          <h2>Achievements</h2>
+          <hr>
+          <div class="myslider">
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2021_6_RnD_탑재시뮬_박준석.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2021년 6월 R&D News - 박준석 책임<br> <p>추진 축 탑재 안정성 평가 Simulator 개발</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2021_1급제안_권혁민.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2021년 6월 1급 제안 - 권혁민 책임 <br> <p>Truss 조립용정반 개조방법 개선으로 시설투자비용 최소화</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2021_11_RnD_의장자동화_박준석_권혁민.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2021년 11월 R&D News - 박준석 책임, 권혁민 책임<br> <p>디지털 트윈 적용 의장품 최적설계 및 해석 자동화 플랫폼 개발</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2022_2_RnD_트러스_권혁민.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2022년 2월 R&D News - 박준석 책임, 권혁민 책임<br> <p>의장품 구조강도 평가 자동화 시스템 개발</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2022_4_RnD_프로펠러탑재_박준석.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2022년 4월 R&D News - 박준석 책임<br> <p>프로펠러 탑재 작업 안정성 향상</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2022_1차_우수성과포상_권혁민.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2022년 4월 1차 우수성과 포상 - 권혁민 책임 <br><p>MLNGC 화물창 건조용 트러스 구조 배치 최적화</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2022_9_RnD_권상_권혁민_김미희.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2022년 9월 R&D - 권혁민 책임, 김미희 책임 <br> <p>엔진룸 내 중량물 권상 구조해석 자동화 시스템 개발</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2022_10_RnD_유닛권상_김미희.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2022년 10월 R&D - 김미희 책임 <br> <p>LNGC 모듈 유닛 권상 위치 및 임시 부재 설치 최적화</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/HiSafe_장려상_김미희.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2022년 10월 HiSafe - 김미희 책임 <br> <p>LNGC 모듈 유닛 권상 위치 및 임시 부재 설치 최적화</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2022_3차_우수성과포상_권혁민.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2022년 10월 3차 우수성과 포상 - 권혁민 책임 <br> <p>Truss 조립용정반 개조방법 개선으로 시설투자비용 최소화</p>
+              </div>
+            </div>
+            <div class="achieve_box">              
+              <img src="{{url_for('static', filename='images/achievement/2024_11_우수성과포상_박준석.jpg')}}" alt="">              
+              <div class="achieve_desc">
+                2024년 11월 우수성과 포상 - 박준석 책임 <br> <p>Lifting Lug & Beam의 Over Load Test & NDT 개선</p>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="notice" id="notice">
+      <div class="inner">
+        <div class="notice-section">
+          <h3><i class="fa fa-bullhorn"></i> 공지사항</h3>
+          <table class="notice-table">
+            <thead>
+              <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>등록일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>
+                  <a href="#none" onclick="openNoticeModal(
+                         'Hi-TESS Cloud 오픈 안내',
+                         '안녕하세요. Hi-TESS Cloud 관리자 권혁민 책임입니다.<br>' +
+                         'Hi-TESS Cloud 오픈이 예정되어 있습니다.<br>' +
+                         '많은 관심 부탁드립니다.'
+                    )">
+                    Hi-TESS Cloud 오픈 안내
+                  </a>
+                </td>
+                <td>관리자</td>
+                <td>2025-04-10</td>
+              </tr>            
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="callaction">
+      <div class="callaction-heading">
+        <h2>The Most Simple & Comfortable way <br>to Assess Outfitting Structures </h2>
+        <!-- <a href="/nas/support">GET ACCESS</a> -->
+      </div>
+    </section>
+    <footer>
+      <div class="inner">
+        <div class="footer-content">
+        <ul>
+          <li>Kwon Hyuk Min</li> 
+          <li>Senior Researcher, kwonhyukmin@hd.co.kr</li>
+          <li>Ship Outfitting Research Department</li>
+        </ul>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <a class="gototop" href="#"><i class="fa fa-angle-up"></i></a>
+</body>
+
+<div id="noticeModal" class="notice-modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeNoticeModal()">&times;</span>
+    <h4 id="noticeTitle">제목</h4>
+    <p id="noticeBody">내용</p>
+  </div>
+</div>
+
+</html>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <script>
+    alert('{{messages[-1]}}')
+  </script>
+{% endif %}
+{% endwith %}
+
+<script>
+  function openNoticeModal(title, content) {
+    document.getElementById('noticeTitle').innerText = title;
+    document.getElementById('noticeBody').innerHTML  = content;
+    document.getElementById('noticeModal').style.display = 'block';
+  }
+
+  function closeNoticeModal() {
+    document.getElementById('noticeModal').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('noticeModal');
+    if (event.target === modal) {
+      closeNoticeModal();
+    }
+  }
+</script>

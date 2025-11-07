@@ -1,0 +1,2 @@
+HookTrolley __init__ 진입 확인
+self.filename : C:\Users\HHI\KHM\HiTessCloud_Flask\main\userConnection\HiTessBeam\ModuleUnit\10.14.42.71_1752099833836\M04_R01.bdf

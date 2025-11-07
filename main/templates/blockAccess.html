@@ -1,0 +1,245 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="mypage_container"> 
+  <div class="mypage3">
+    <div>
+      <p>프로그램 사용 권한 요청</p>
+      <hr>
+      <p class="alignRight">{{session['userDept']}} {{session['userName']}} {{session['userPos']}}님 </p>
+  </div> 
+    </div>  
+    <div class="permission-tree">
+      <ul class="tree-list">
+        <li>
+          <span class="caret">Beam</span>
+          <div class="nested">
+            <div class="tree-content">
+              <table class="perm-table">
+                <thead>
+                  <tr>
+                    <th>프로그램</th>
+                    <th>사용 권한</th>
+                    <th>사용 권한 신청</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mooring Fitting 구조 안정성 평가</td>
+                    {% if 'Mooring Fitting 구조 안정성 평가' in session['permissions'] %}
+                      {% if session['permissions']['Mooring Fitting 구조 안정성 평가'] == True %}
+                        <td><span class="badge approved">승인됨</span></td>
+                        <td>-</td>
+                      {% else %}
+                        <td><span class="badge pending">신청중</span></td>      
+                        <td>-</td>   
+                      {% endif %}         
+                    {% else %}
+                      <td><span class="badge none">없음</span></td>
+                      <td>
+                        <form method="POST" action="/member/requestPermissions">
+                          <input type="hidden" name="program_name" value="Mooring Fitting 구조 안정성 평가">
+                          <button type="submit" class="btn-request">신청하기</button>
+                        </form>     
+                      </td>
+                    {% endif %}
+                  </tr>
+                  <tr>
+                    <td>Beam Structure Solution</td>
+                    {% if 'Beam Structure Solution' in session['permissions'] %}
+                      {% if session['permissions']['Beam Structure Solution'] == True %}
+                        <td><span class="badge approved">승인됨</span></td>
+                        <td>-</td>
+                      {% else %}
+                        <td><span class="badge pending">신청중</span></td>
+                        <td>-</td>
+                      {% endif %}
+                    {% else %}
+                      <td><span class="badge none">없음</span></td>
+                      <td>
+                        <form method="POST" action="/member/requestPermissions">
+                          <input type="hidden" name="program_name" value="Beam Structure Solution">
+                          <button type="submit" class="btn-request">신청하기</button>
+                        </form>
+                      </td>
+                    {% endif %}
+                  </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="caret">Truss</span>
+          <div class="nested">
+            <div class="tree-content">
+              <table class="perm-table">
+                <thead>
+                  <tr>
+                    <th>프로그램</th>
+                    <th>사용 권한</th>
+                    <th>사용 권한 신청</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Truss 해석 모델 구축</td>
+                    {% if 'Truss 해석 모델 구축' in session['permissions'] %}
+                      {% if session['permissions']['Truss 해석 모델 구축'] == True %}
+                        <td><span class="badge approved">승인됨</span></td>
+                        <td>-</td>
+                      {% else %}
+                        <td><span class="badge pending">신청중</span></td>      
+                        <td>-</td>   
+                      {% endif %}         
+                    {% else %}
+                      <td><span class="badge none">없음</span></td>
+                      <td>
+                        <form method="POST" action="/member/requestPermissions">
+                          <input type="hidden" name="program_name" value="Truss 해석 모델 구축">
+                          <button type="submit" class="btn-request">신청하기</button>
+                        </form>     
+                      </td>
+                    {% endif %}
+                  </tr>       
+                  <tr>
+                    <td>Truss 구조 안정성 평가</td>
+                    {% if 'Truss 구조 안정성 평가' in session['permissions'] %}
+                      {% if session['permissions']['Truss 구조 안정성 평가'] == True %}
+                        <td><span class="badge approved">승인됨</span></td>
+                        <td>-</td>
+                      {% else %}
+                        <td><span class="badge pending">신청중</span></td>      
+                        <td>-</td>   
+                      {% endif %}         
+                    {% else %}
+                      <td><span class="badge none">없음</span></td>
+                      <td>
+                        <form method="POST" action="/member/requestPermissions">
+                          <input type="hidden" name="program_name" value="Truss 구조 안정성 평가">
+                          <button type="submit" class="btn-request">신청하기</button>
+                        </form>     
+                      </td>
+                    {% endif %}
+                  </tr>   
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <span class="caret">PSA</span>
+          <div class="nested">
+            <div class="tree-content">
+              <table class="perm-table">
+                <thead>
+                  <tr>
+                    <th>프로그램</th>
+                    <th>사용 권한</th>
+                    <th>사용 권한 신청</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Double Walled Fuel Line</td>
+                    {% if 'Double Walled Fuel Line' in session['permissions'] %}
+                      {% if session['permissions']['Double Walled Fuel Line'] == True %}
+                        <td><span class="badge approved">승인됨</span></td>
+                        <td>-</td>
+                      {% else %}
+                        <td><span class="badge pending">신청중</span></td>      
+                        <td>-</td>   
+                      {% endif %}         
+                    {% else %}
+                      <td><span class="badge none">없음</span></td>
+                      <td>
+                        <form method="POST" action="/member/requestPermissions">
+                          <input type="hidden" name="program_name" value="Double Walled Fuel Line">
+                          <button type="submit" class="btn-request">신청하기</button>
+                        </form>     
+                      </td>
+                    {% endif %}
+                  </tr>
+                  <tr>
+                    <td>임시 테스트</td>
+                    {% if '임시 테스트' in session['permissions'] %}
+                      {% if session['permissions']['Double Walled Fuel Line'] == True %}
+                        <td><span class="badge approved">승인됨</span></td>
+                        <td>-</td>
+                      {% else %}
+                        <td><span class="badge pending">신청중</span></td>      
+                        <td>-</td>   
+                      {% endif %}         
+                    {% else %}
+                      <td><span class="badge none">없음</span></td>
+                      <td>
+                        <form method="POST" action="/request_permission">
+                          <input type="hidden" name="program_name" value="Truss 해석 모델 구축">
+                          <button type="submit" class="btn-request">신청하기</button>
+                        </form>                        
+                      </td>
+                    {% endif %}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </li>
+
+    </div>
+  </div>
+</div>
+  
+  
+  
+  
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggler = document.getElementsByClassName("caret");
+    for (let i = 0; i < toggler.length; i++) {
+      toggler[i].addEventListener("click", function () {
+        this.parentElement.querySelector(".nested").classList.toggle("active");
+        this.classList.toggle("caret-down");
+      });
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+  // 1. 모든 nested 영역 열기 (트리 펼쳐진 상태)
+  document.querySelectorAll(".nested").forEach(nested => {
+    nested.classList.add("active");
+  });
+
+  // 2. caret 아이콘 제어
+  document.querySelectorAll(".caret").forEach(caret => {
+    // 초기에는 caret-down 클래스 추가 하지 않음
+
+    caret.addEventListener("click", () => {
+      const nested = caret.nextElementSibling;
+
+      // toggle 상태
+      const isActive = nested.classList.contains("active");
+      nested.classList.toggle("active");
+
+      // caret 아이콘 방향 조절
+      if (isActive) {
+        caret.classList.remove("caret-down");
+      } else {
+        caret.classList.add("caret-down");
+      }
+    });
+
+    // 대신 nested가 active 상태면 caret-down을 붙여줌
+    if (caret.nextElementSibling.classList.contains("active")) {
+      caret.classList.add("caret-down");
+    }
+  });
+});
+
+</script>
+
+
+{% endblock %} 

@@ -1,0 +1,114 @@
+open animation modelandresult "C:\Users\HHI\KHM\HiTessCloud_Flask\main\PythonModule\SUM2.bdf" "C:\Users\HHI\KHM\HiTessCloud_Flask\main\PythonModule\SUM2.op2"
+result scalar load type=Displacement
+animate frame last
+show legends
+annotation note "Model Info"display visibility=false
+scale deformed resulttype=Displacement value=10.000000
+result scalar legend layout format=fixed
+result scalar legend layout precision=1
+result scalar legend values valuefont="{Noto Sans} 15 bold roman"
+result scalar legend title font="{Noto Sans} 15 bold roman"
+annotation measure "Static MinMax Result" display visibility=true
+annotation measure "Static MinMax Result" display  id=false
+annotation measure global precision=1
+annotation measure "Static MinMax Result" display font="{Noto Sans} 14 bold roman"
+annotation measure "Static MinMax Result" display  min=false
+save image page "C:\Users\HHI\KHM\HiTessCloud_Flask\main\PythonModule\SUM2_disp.png"
+scale deformed resulttype=Displacement value=1.000000
+result scalar load type="1D Stress" component="CBEAM Minimum Stress1"
+annotation measure global precision=1
+annotation measure "Static MinMax Result" display visibility=true
+annotation measure "Static MinMax Result" display font="{Noto Sans} 14 bold roman"
+annotation measure "Static MinMax Result" display  min=True
+annotation measure "Static MinMax Result" display  max=false
+animate frame last
+show legends
+result scalar legend layout format=fixed
+result scalar legend layout precision=1
+result scalar legend values valuefont="{Noto Sans} 15 bold roman"
+result scalar legend title font="{Noto Sans} 15 bold roman"
+save image page "C:\Users\HHI\KHM\HiTessCloud_Flask\main\PythonModule\SUM2_stress.png"
+result scalar load type="1D Force" component="CROD Axial Force" system=global
+result scalar multiplier 0.000102041
+annotation measure create distancebetween "Measure Group 3"
+annotation measure rename "Measure Group 3" 1
+annotation measure 1 type elementalcontour
+annotation measure 1 add elements "1 Beam 1"
+annotation measure 1 display name=true
+annotation measure global precision=0
+annotation measure 1 display value=false
+annotation measure 1 display id=false
+annotation measure global transparency=true
+annotation measure "1" display font="{Noto Sans} 8 normal roman"
+annotation measure create distancebetween "Measure Group 3"
+annotation measure rename "Measure Group 3" 2
+annotation measure 2 type elementalcontour
+annotation measure 2 add elements "1 Beam 2"
+annotation measure 2 display name=true
+annotation measure global precision=0
+annotation measure 2 display value=false
+annotation measure 2 display id=false
+annotation measure global transparency=true
+annotation measure "2" display font="{Noto Sans} 8 normal roman"
+annotation measure create distancebetween "Measure Group 3"
+annotation measure rename "Measure Group 3" 3
+annotation measure 3 type elementalcontour
+annotation measure 3 add elements "1 Beam 3"
+annotation measure 3 display name=true
+annotation measure global precision=0
+annotation measure 3 display value=false
+annotation measure 3 display id=false
+annotation measure global transparency=true
+annotation measure "3" display font="{Noto Sans} 8 normal roman"
+annotation measure create distancebetween "Measure Group 3"
+annotation measure rename "Measure Group 3" 4
+annotation measure 4 type elementalcontour
+annotation measure 4 add elements "1 Beam 4"
+annotation measure 4 display name=true
+annotation measure global precision=0
+annotation measure 4 display value=false
+annotation measure 4 display id=false
+annotation measure global transparency=true
+annotation measure "4" display font="{Noto Sans} 8 normal roman"
+annotation measure create distancebetween "Measure Group 3"
+annotation measure rename "Measure Group 3" 5
+annotation measure 5 type elementalcontour
+annotation measure 5 add elements "1 Beam 50"
+annotation measure 5 display name=true
+annotation measure global precision=0
+annotation measure 5 display value=false
+annotation measure 5 display id=false
+annotation measure global transparency=true
+annotation measure "5" display font="{Noto Sans} 8 normal roman"
+annotation measure create distancebetween "Measure Group 3"
+annotation measure rename "Measure Group 3" 6
+annotation measure 6 type elementalcontour
+annotation measure 6 add elements "1 Beam 51"
+annotation measure 6 display name=true
+annotation measure global precision=0
+annotation measure 6 display value=false
+annotation measure 6 display id=false
+annotation measure global transparency=true
+annotation measure "6" display font="{Noto Sans} 8 normal roman"
+annotation measure create distancebetween "Measure Group 3"
+annotation measure rename "Measure Group 3" 7
+annotation measure 7 type elementalcontour
+annotation measure 7 add elements "1 Beam 52"
+annotation measure 7 display name=true
+annotation measure global precision=0
+annotation measure 7 display value=false
+annotation measure 7 display id=false
+annotation measure global transparency=true
+annotation measure "7" display font="{Noto Sans} 8 normal roman"
+annotation measure create distancebetween "Measure Group 3"
+annotation measure rename "Measure Group 3" 8
+annotation measure 8 type elementalcontour
+annotation measure 8 add elements "1 Beam 53"
+annotation measure 8 display name=true
+annotation measure global precision=0
+annotation measure 8 display value=false
+annotation measure 8 display id=false
+annotation measure global transparency=true
+annotation measure "8" display font="{Noto Sans} 8 normal roman"
+annotation measure "Static MinMax Result"display visibility=false
+save image page "C:\Users\HHI\KHM\HiTessCloud_Flask\main\PythonModule\SUM2_tension.png"

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <!-- Flask 개발 버전 -->
+  <!-- <script src="{{url_for('static', filename='js/all.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/jquery-3.5.1.min.js')}}"></script> -->
+    <!-- my css -->
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+
+  <title>{{title}}</title>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuItems = document.querySelectorAll('.sidebar ul li');
+
+        // Check URL hash to open specific menu
+        const hash = window.location.hash;
+        if (hash) {
+            const activeLink = document.querySelector(`.sidebar ul li a[href="${hash}"]`);
+            if (activeLink) {
+                const parent = activeLink.parentElement;
+                if (parent && parent.parentElement) {
+                    parent.parentElement.classList.add('open');
+                }
+            }
+        }
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = this.classList.contains('open');
+                menuItems.forEach(i => i.classList.remove('open'));
+                if (!isOpen) {
+                    this.classList.add('open');
+                }
+            });
+        });
+    });
+</script>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <script>
+    alert('{{messages[-1]}}')
+  </script>
+{% endif %}
+{% endwith %}
+
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="banner">
+        <div class="lnb">
+        {% if session['userID'] %}
+        <span>{{session['userName']}} {{session['userPos']}}님</span>
+        <a href="/member/logout">Log out</a>
+        <a href="/member/myAccess">Program Access</a>
+        <a href="/member/mypage">My page</a>
+        {% else %}
+        <a href="/member/login">Log in</a>
+        <a href="/member/join">Join</a>
+        {% endif %}
+        </div>
+      </div>
+      <nav>
+        <a href="/" class="logo">
+          <img src="../static/images/HiTESS_logo.png", class="HiTessLogo">
+          <p>Hi-TESS CLOUD</p>
+        </a>
+        <ul class="gnb">
+          <li><a href="/">HOME</a></li>
+          <li><a href="/#vision">VISION</a></li>
+          <li><a href="/#assessment">ASSESSMENT</a></li>
+          <li><a href="/#achivement">ACHIEVEMENTS</a></li>
+          <li><a href="/#notice">NOTICE</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="inner">
+      {% block contents %}
+      {% endblock %}
+    </div>   
+   
+  </div>
+</body>
+</html>

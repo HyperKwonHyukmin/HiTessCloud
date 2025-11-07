@@ -1,0 +1,75 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+
+<div class="join-wrapper">
+  <form action="/member/join" method="POST" class="join-form">
+    <h2 class="join-title">Join</h2>
+    <p class="join-subtitle">Hi-TESS CLOUD 사용을 위해 사번을 입력해 주세요.</p>
+    
+    <div class="input-group">
+      <label for="company">회 사</label>
+      <select name="company" id="company" required>
+        <option value="HD 현대중공업" selected>HD 현대중공업</option>
+        <option value="HD 현대삼호">HD 현대삼호</option>
+      </select>
+    </div>
+
+    <div class="input-group">      
+      <label for="id">사 번</label>
+      <input type="text" name="id" id="id" placeholder="사번 입력" required autocomplete="off">
+      <input type="hidden" name="hidden" value="confirm">
+    </div>
+
+    <div class="info-group">
+      <label>이 름</label>
+      <input type="text" name="name"  placeholder="사번 확인 시, 자동 입력"value="" disabled>
+    </div>
+    <div class="info-group">
+      <label>직 급</label>
+      <input type="text" name="level"  placeholder="사번 확인 시, 자동 입력"value="" disabled>
+    </div>
+    <div class="info-group">
+      <label>부 서</label>
+      <input type="text" name="division"  placeholder="사번 확인 시, 자동 입력"value="" disabled>
+    </div>
+
+    <p class="join-notice">* 관리자 승인 후 프로그램 이용이 가능합니다.</p>
+
+    <button type="submit" class="btn-join">사번 확인</button>
+    
+  </form>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const companySelect = document.getElementById('company');
+
+    companySelect.addEventListener('change', function () {
+      const selectedCompany = companySelect.value;
+
+      if (selectedCompany === 'HD 현대삼호') {
+        // HD 현대삼호 선택 시 즉시 이동
+        window.location.href = '/member/joinSamho';
+      }
+    });
+  });
+
+  const booseo = document.querySelector('#booseo');
+  const ETC_booseo = document.querySelector('#ETC_booseo');
+
+  window.addEventListener('change', ()=> {
+    const booseo_value = booseo.value;
+    console.log(booseo_value);
+    if (booseo_value == 'ETC') {
+      ETC_booseo.disabled = false;
+    }else{
+      ETC_booseo.disabled = true;
+    }
+  })
+
+</script>
+        
+{% endblock %}
+    

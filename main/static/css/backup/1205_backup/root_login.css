@@ -1,0 +1,283 @@
+.join {
+  box-sizing: border-box;
+  display: block;
+  width: 500px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding-left: 50px;
+  margin: 190px auto;
+}
+.login {
+  box-sizing: border-box;
+  display: block;
+  width: 500px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding-left: 50px;
+  margin: 320px auto;
+}
+.join_content p {
+  text-align: center;
+}
+.field {
+  margin: 15px 0;
+}
+.join p, .login p {
+  font-family: 'Montserrat_SemiBold';
+  font-size: 2em;
+}
+.join b, .login b {
+  display: block;
+  font-family: 'NotoSansKR_Bold';
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+.join input[type=text].id_input {
+  display: inline-block;
+  font-family: 'NotoSansKR_Regular';
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  outline: none;
+  width: 310px;
+  text-align: left;
+  height: 40px;
+  margin: 0;
+  font-size: 1.2em; 
+  padding-left: 10px;
+}
+.join input[type=text]::placeholder {
+  font-family: 'NotoSansKR_Regular';
+  font-size: 0.8em;
+  transform: translateY(-2px);
+  color: #c9c7c7;
+}
+.join input[type=text] {
+  display: inline-block;
+  font-family: 'NotoSansKR_Regular';
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  outline: none;
+  width: 400px;
+  text-align: left;
+  height: 40px;
+  margin: 0;
+  font-size: 1.2em; 
+  padding-left: 10px;
+}
+.btn_confirm {
+  height: 40px;
+  width: 85px;
+  background-color: #293649;
+  color:#fff;
+  transform: translateY(-3px);
+  border-radius: 5px;
+  border: none;
+  font-size: 15px;
+  transition: 0.35s;
+  margin-left: 5px;
+}
+.btn_confirm:hover {
+  background-color: #4FA095;
+}
+.btn_confirm_after {
+  display: inline-block;
+  text-align: center;
+  height: 40px;
+  width: 85px;
+  background-color: #ddd;
+  color:#fff;
+  transform: translateY(-3px);
+  border-radius: 5px;
+  border: none;
+  font-size: 15px;
+  transition: 0.35s;
+  margin-left: 5px;
+  line-height: 40px;
+}
+.field p {
+  font-size: 1em;
+  text-align: right;
+  margin-right: 20px;
+}
+.btn_join_before {
+  display: block;
+  width: 400px;
+  background-color: #ddd;
+  color:#fff;
+  font-size: 20px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 50px;
+  height:40px;  
+  transition: 0.35s;
+  border: none;
+  line-height: 40px;
+}
+.btn_join {
+  display: block;
+  width: 400px;
+  background-color: #293649;
+  color:#fff;
+  font-size: 20px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 50px;
+  height:40px;  
+  transition: 0.35s;
+  border: none;
+}
+.btn_join:hover {
+  background-color: #4FA095;
+}
+.notice_text {
+  font-family: 'NotoSansKR_Regular';
+  font-size: 0.8em;
+  color: rgb(170, 167, 167);
+}
+
+.login input[type=text]{
+  display: inline-block;
+  font-family: 'NotoSansKR_Regular';
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  outline: none;
+  width: 400px;
+  text-align: left;
+  height: 40px;
+  margin: 0;
+  font-size: 1.1em; 
+  padding-left: 10px;
+}
+
+.mypage_container {
+  /* border: 1px solid #000; */
+  width: 1000px;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+.mypage1 hr, .mypage3 hr{
+  border: none;
+  height: 4px;
+  width: 120px;
+  background-color: #0984e3;
+  margin: 0px auto;
+}
+.mypage1 p:nth-of-type(1){
+  font-family: 'Montserrat_SemiBold';
+  text-align: center;
+  font-size: 2em;
+}
+.mypage1 p:nth-of-type(2){
+  font-family: 'NotoSansKR_Regular';
+  text-align: right;
+  font-size: 1em;
+  margin-right: 20px;;
+}
+.mypage2 {
+  display: flex;
+  justify-content: center;  
+  background-color: #4FBDBA;
+  padding: 20px 0;
+}
+.mypage2 div {
+  width: 250px;
+  height: 100px;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+.mypage2 div:nth-child(1){ 
+  margin-right: 80px;;  
+}
+.mypage2 div:nth-child(2){
+}
+.mypage2 div p:nth-child(1){
+  font-family: 'NotoSansKR_Regular';
+  font-size: 1.2em;
+}
+.mypage2 div p:nth-child(2) {
+  color: #000;
+  font-family: 'NotoSansKR_Regular';
+  font-size: 0.9em;
+}
+.mypage2 div p span {
+  color: #000;
+  font-size: 2.3em;
+  margin-right: 3px;
+}
+.mypage3 {
+  padding-top: 50px;
+  /* border: 1px solid #000; */
+}
+.mypage3 p:nth-child(1) {
+  font-family: 'NotoSansKR_Bold';
+  text-align: center;
+  font-size: 2em;
+}
+.analysisRecords {
+  text-align: center;
+  margin-top: 50px;
+  overflow: hidden;
+}
+.analysisRecords table {
+  width: 700px;
+  border-collapse: collapse;  
+  box-shadow: 0 0 15px rgba(0,0,0,0.1); 
+  margin: auto;
+  border-radius: 10px;  
+}
+.analysisRecords tr {
+  border-bottom: 1px solid #eee;
+  transition: 0.3s;
+}
+.analysisRecords tr:last-child {
+  border: none;
+}
+.analysisRecords tr:nth-child(odd) {
+  background-color: #eee;
+}
+.analysisRecords th,
+.analysisRecords td {
+  padding: 12px;
+  text-align: center;
+}
+.analysisRecords tr th {
+  background-color: dodgerblue;
+  color: #fff;
+}
+.analysisRecords tr th:first-child {
+  border-radius: 5px 0 0 0;
+}
+.analysisRecords tr th:last-child {
+  border-radius: 0 5px 0 0;
+}
+.download a{
+  color: blue;
+}
+.nodownload {
+  color: rgb(85, 83, 83);
+}
+.pagenation {
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+.pagenation a {
+  color: #000;
+  padding-right: 5px;
+}
+.pagenation .Current{
+  color: dodgerblue;
+  padding-right: 5px;
+}
+.before_next{
+  font-size: 0.8em;
+}
+
+
+
