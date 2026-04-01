@@ -1,16 +1,16 @@
-
 <div class="sidebar">
   <h2>Assessment Menu</h2>
   <ul>
-    <li class="{% if request.path.startswith('/beam') %}open{% endif %}">
+    <li class="{% if request.path.startswith('/beam') or request.path.startswith('/buckling') %}open{% endif %}">
       <a href="#none" role="button"
-         aria-expanded="{% if request.path.startswith('/beam') %}true{% else %}false{% endif %}"
+         aria-expanded="{% if request.path.startswith('/beam') or request.path.startswith('/buckling') %}true{% else %}false{% endif %}"
          aria-controls="submenu-beam">
         Beam <span class="arrow">&#9654;</span>
       </a>
-      <ul id="submenu-beam" aria-hidden="{% if request.path.startswith('/beam') %}false{% else %}true{% endif %}">
+      <ul id="submenu-beam" aria-hidden="{% if request.path.startswith('/beam') or request.path.startswith('/buckling') %}false{% else %}true{% endif %}">
         <li><a href="/beam/mooringFitting">Mooring Fitting 구조 안정성 평가</a></li>
-        <li><a href="#none">추가 예정</a></li>
+        <li><a href="/buckling/columnbuckling">기둥 좌굴 허용 하중 계산</a></li>
+        <li><a href="/mastpost/">추가 예정</a></li>
       </ul>
     </li>
 
@@ -23,7 +23,6 @@
       <ul id="submenu-truss" aria-hidden="{% if request.path.startswith('/truss') %}false{% else %}true{% endif %}">
         <li><a href="/truss/trussModelBuilder">Truss 해석 모델 구축</a></li>
         <li><a href="/truss/trussAssessment">Truss 구조 안정성 평가</a></li>
-        <li><a href="#none">추가 예정</a></li>
       </ul>
     </li>
 
@@ -35,19 +34,6 @@
       </a>
       <ul id="submenu-pipe" aria-hidden="{% if request.path.startswith('/pipe') %}false{% else %}true{% endif %}">
         <li><a href="/pipe/FuelLine">Double Walled Fuel Line</a></li>
-        <li><a href="/#none">추가 예정</a></li>
-      </ul>
-    </li>
-
-    <li class="{% if request.path.startswith('/module') %}open{% endif %}">
-      <a href="#none" role="button"
-         aria-expanded="{% if request.path.startswith('/module') %}true{% else %}false{% endif %}"
-         aria-controls="submenu-module">
-        Module Unit <span class="arrow">&#9654;</span>
-      </a>
-      <ul id="submenu-module" aria-hidden="{% if request.path.startswith('/module') %}false{% else %}true{% endif %}">
-        <li><a href="#none">추가 예정</a></li>
-        <li><a href="#none">추가 예정</a></li>
       </ul>
     </li>
   </ul>

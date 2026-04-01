@@ -1,0 +1,126 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+<style>
+    .mp-container { width: 1000px; max-width: 95%; margin: 50px auto; padding: 40px; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-radius: 12px; }
+    .mp-header { font-size: 1.8em; color: #002b5c; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+
+    .data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 14px; }
+    .data-table th, .data-table td { border: 1px solid #ddd; padding: 12px; vertical-align: middle; }
+    .data-table th { background-color: #f8f9fa; color: #333; text-align: left; width: 30%; }
+
+    .input-editable { background-color: #fff9c4 !important; border: 2px solid #fbc02d; font-weight: bold; width: 100%; box-sizing: border-box; padding: 6px; }
+    .input-readonly { background-color: #e9ecef; border: 1px solid #ccc; width: 100%; box-sizing: border-box; padding: 6px; color: #666; font-weight: bold; }
+
+    .btn-execute { background-color: #002b5c; color: #fff; border: none; padding: 12px 30px; font-size: 16px; border-radius: 6px; cursor: pointer; display: block; width: 100%; font-weight: bold; }
+    .btn-execute:hover { background-color: #001f44; }
+
+    /* 결과 테이블용 CSS */
+    .result-section { margin-top: 50px; border-top: 2px solid #002b5c; padding-top: 20px; }
+    .result-table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: center; font-size: 14px; }
+    .result-table th { background-color: #002b5c; color: white; padding: 12px; border: 1px solid #001f44; }
+    .result-table td { border: 1px solid #ddd; padding: 12px; }
+    .rank-1 { background-color: #e8f5e9; font-weight: bold; color: #2e7d32; }
+</style>
+
+<main class="main">
+    {% include "sideMenu.html" %}
+
+    <div class="mp-container">
+        <h1 class="mp-header">Mast & Post Design Optimization</h1>
+        <p style="margin-bottom: 20px; color: #666;">노란색 셀(H, Weight)의 값을 입력하고 실행 버튼을 누르세요.</p>
+
+        <form action="/mastpost/mastpost" method="POST">
+            <table class="data-table">
+                <tbody>
+                    <tr>
+                        <th rowspan="2">Post</th>
+                        <td>Post Height [H] (mm)</td>
+                        <td><input type="number" name="postHeight" class="input-editable" value="{{ post_height | default('4200.0') }}" step="0.1" required></td>
+                    </tr>
+                    <tr>
+                        <td>Post Weight (kg)</td>
+                        <td><input type="text" class="input-readonly" readonly value="{% if calculated %}{{ best.postWeight | round(1) }}{% else %}-{% endif %}"></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">Bracket</th>
+                        <td>Direction (°)</td>
+                        <td><input type="text" class="input-readonly" readonly value="{% if calculated %}45{% else %}-{% endif %}"></td>
+                    </tr>
+                    <tr>
+                        <td>Bracket Height [BH] (mm)</td>
+                        <td><input type="text" class="input-readonly" readonly value="{% if calculated %}{{ best.bracketHeight }}{% else %}-{% endif %}"></td>
+                    </tr>
+                    <tr>
+                        <td>Bracket Breadth [BB] (mm)</td>
+                        <td><input type="text" class="input-readonly" readonly value="{% if calculated %}{{ best.bracketBreadth }}{% else %}-{% endif %}"></td>
+                    </tr>
+                    <tr>
+                        <td>Bracket Thickness [BT] (mm)</td>
+                        <td><input type="text" class="input-readonly" readonly value="{% if calculated %}{{ best.bracketThickness }}{% else %}-{% endif %}"></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">Platform</th>
+                        <td>Height [HP] (mm)</td>
+                        <td><input type="text" class="input-readonly" readonly value="{% if calculated %}{{ post_height }}{% else %}-{% endif %}"></td>
+                    </tr>
+                    <tr>
+                        <td>Weight (kg)</td>
+                        <td><input type="number" name="platformWeight" class="input-editable" value="{{ platform_weight | default('150.0') }}" step="0.1" required></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">DN Post Load</th>
+                        <td>Force [Fz] (N)</td>
+                        <td><input type="text" class="input-readonly" readonly style="color:#d32f2f;" value="{% if calculated %}{{ best.forceVertical | round(1) }}{% else %}-{% endif %}"></td>
+                    </tr>
+                    <tr>
+                        <td>Moment [Fh*L] (Nmm)</td>
+                        <td><input type="text" class="input-readonly" readonly style="color:#d32f2f;" value="{% if calculated %}{{ best.bendingMoment | round(1) }}{% else %}-{% endif %}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn-execute">최적 설계 알고리즘 실행 (Execute)</button>
+        </form>
+
+        {% if calculated %}
+        <div class="result-section">
+            <h3 style="color: #002b5c;">🏆 최적 설계 추천 단면 (Top 5 Candidates)</h3>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>순위</th>
+                        <th>Outer Diameter [D] (mm)</th>
+                        <th>Thickness [T] (mm)</th>
+                        <th>Area (mm²)</th>
+                        <th>Eq. Stress (MPa)</th>
+                        <th>Displacement (mm)</th>
+                        <th>결과 (Pass)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in candidates %}
+                    <tr class="{% if item.rank == 1 %}rank-1{% endif %}">
+                        <td>{{ item.rank }}</td>
+                        <td><strong>{{ item.outerDiameter }}</strong></td>
+                        <td><strong>{{ item.thickness }}</strong></td>
+                        <td>{{ item.area | round(1) }}</td>
+                        <td>{{ item.maxEquivalentStress | round(1) }}</td>
+                        <td>{{ item.maxDisplacement | round(1) }}</td>
+                        <td>
+                            {% if item.stressOk and item.displacementOk %}
+                                <span style="color:green; font-weight:bold;">O.K</span>
+                            {% else %}
+                                <span style="color:red; font-weight:bold;">N.G</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+    </div>
+</main>
+{% endblock %}

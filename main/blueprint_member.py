@@ -134,65 +134,50 @@ def member_logout():
   return redirect(url_for('member.member_login'))
 
 
+# blueprint_member.py 파일 상단에서 classEmpIDValid 임포트 제거
+
 ## member 회원가입 라우터 ######################################################################################
 @blueprint.route('/join', methods=['POST', 'GET'])
 def member_join():
-  if request.method == 'GET':
-    return render_template('blockJoinBefore.html', title='회원가입')
-  else:
-    hidden = request.form.get('hidden') # hidden에 사번정보 확인 전인지, 아니면 후인지를 판단하도록 하였음
-    id = request.form.get('id')
-
-    if hidden == 'confirm': # 사번 확인 단계
-      Val = classEmpIDValid() 
-      try:                        
-        Val.Search(id)
-        userID = id
-        userName = Val.userName
-        userDept = Val.userDept
-        userPos = Val.userPos
-        userData = {
-              'userID' : userID,
-              'userName' : userName,
-              'userDept' : userDept,
-              'userPos' : userPos,
-          }
-        return render_template('blockJoinAfter.html', userData = userData, title='회원가입') 
-      except:
-        flash('사번 정보가 없습니다.')
+    if request.method == 'GET':
         return render_template('blockJoinBefore.html', title='회원가입')
 
-    else: # 사번 확인이 끝나고 회원 가입 단계
-      Val = classEmpIDValid() 
-      Val.Search(id)
-      userID = id
-      company = request.form.get('company')
-      userID = userID.upper()
-      userName = Val.userName
-      userDept = Val.userDept
-      userPos = Val.userPos
-      current_utc_time = round(datetime.utcnow().timestamp() * 1000) # 회원 가입을 하는 시간 기록
+    else:
+        # 1. 폼 데이터 수집
+        userID = request.form.get('id').upper()  # 사번 대문자 처리
+        userName = request.form.get('name')  # 직접 입력받은 이름
+        company = request.form.get('company')  # 선택된 회사
+        userDept = request.form.get('division')  # 직접 입력받은 부서
+        userPos = request.form.get('rank')  # 선택된 직급
 
-      # 회원 가입 정보를 DB에 저장
-      userData = {
-            'userID' : userID, # 사번
-            'userName' : userName, # 회원이름
-            'userCompany' : company, # 회사이름
-            'userDept' : userDept, # 회원부서
-            'userPos' : userPos, # 회원직급
-            'joinTime' : current_utc_time, # 회원가입 시간
-            'joinCNT' : 0, # 회원로그인 횟수
-            'analysisCNT' : 0, # 회원 프로그램 사용 횟수
-            'isMember' : 'False', # 관리자 승인 유무
-            'permissions' : {}
+        # 2. 가입 시간 및 기본 상태 설정
+        current_utc_time = round(datetime.utcnow().timestamp() * 1000)
+
+        # 3. 데이터베이스 저장용 객체 생성
+        userData = {
+            'userID': userID,  # 사번
+            'userName': userName,  # 회원이름
+            'userCompany': company,  # 회사이름
+            'userDept': userDept,  # 회원부서
+            'userPos': userPos,  # 회원직급
+            'joinTime': current_utc_time,  # 회원가입 시간
+            'joinCNT': 0,  # 회원로그인 횟수
+            'analysisCNT': 0,  # 회원 프로그램 사용 횟수
+            'isMember': 'False',  # 관리자 승인 유무 (기본값 신청중)
+            'permissions': {}  # 초기 권한 비어있음
         }
-      members = mongo.db.members
-      cnt = members.count_documents({'userID' : userID}) # 이미 가입되어 있는 회원인지 확인
-      if cnt > 0:
-        flash('이미 회원입니다.')
-        return render_template('blockJoinBefore.html', title='Join')
-      members.insert_one(userData)      
-      return render_template('index.html')
+
+        members = mongo.db.members
+        # 4. 이미 가입된 사번인지 중복 확인
+        cnt = members.count_documents({'userID': userID})
+        if cnt > 0:
+            flash('이미 가입 신청되었거나 활동 중인 사번입니다.')
+            return render_template('blockJoinBefore.html', title='Join')
+
+        # 5. DB 삽입 및 완료 안내
+        members.insert_one(userData)
+        flash('회원가입 신청이 완료되었습니다. 관리자 승인 후 이용 가능합니다.')
+        return render_template('index.html')
 
 ## API에서 회원정보 확인용 라우터 ##################################
 @blueprint.route('/check_user', methods=['POST'])

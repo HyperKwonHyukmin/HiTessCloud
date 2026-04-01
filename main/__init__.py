@@ -43,6 +43,8 @@ from . import blueprint_beam
 from . import blueprint_member
 from . import blueprint_pipe
 from . import blueprint_hitessbeam
+from . import blueprint_buckling
+from . import blueprint_mastpost
 
 #
 # # Blueprint 사용을 위한 등록
@@ -53,6 +55,8 @@ app.register_blueprint(blueprint_beam.blueprint)
 app.register_blueprint(blueprint_member.blueprint)
 app.register_blueprint(blueprint_pipe.blueprint)
 app.register_blueprint(blueprint_hitessbeam.blueprint)
+app.register_blueprint(blueprint_buckling.blueprint)
+app.register_blueprint(blueprint_mastpost.blueprint)
 
 
 def start_user_statistics_background_task(interval_sec=3600):

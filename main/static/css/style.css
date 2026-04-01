@@ -152,15 +152,16 @@ nav {
   margin-right: 0px;
 }
 .main {
-  /* height: 100vh; */
+  /* 본문 영역 전체를 감싸는 부모 컨테이너 */
   display: flex;
-  /* border : 3px solid red; */
+  min-height: calc(100vh - 100px); /* 화면 전체 높이에서 헤더 높이 정도를 뺀 최소 높이 보장 */
+  align-items: stretch; /* 핵심! 내부 자식 요소(사이드바와 콘텐츠)의 높이를 항상 가장 긴 쪽에 맞춰 꽉 채웁니다. */
 }
 
 /* sidebar */
 .sidebar {
   width: 320px;
-  height: 90vh;
+  /* height: 90vh;  <-- 이 고정 높이 속성을 삭제합니다. */
   background: linear-gradient(180deg, #002b5c, #005b96);
   color: white;
   padding: 20px;

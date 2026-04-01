@@ -1,7 +1,82 @@
 InstallProgram/
+logs/
 *.bat
 .idea/
 MongoDB.txt
 CodeBackUp/
 EngineeringPrograms/
 userConnection/
+
+# =========================
+# Python & Flask
+# =========================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+.venv/
+
+# Environment variables
+.env
+.flaskenv
+
+# Flask instance folder (usually contains local config/DB)
+instance/
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# C# & .NET
+# =========================
+# Build results
+bin/
+obj/
+
+# Visual Studio / IDE specific
+.vs/
+*.user
+*.suo
+*.dbmdl
+*.jfm
+
+# =========================
+# Nastran & FEA Analysis Results
+# =========================
+# Standard Nastran output files
+*.f04
+*.f06
+*.log
+*.msg
+*.sts
+
+# Nastran binary result files (often very large)
+*.op2
+*.xdb
+*.pch
+*.dball
+*.master
+
+# HyperMesh / Altair specific result files (if used alongside)
+*.h3d
+*.mvw
+
+# =========================
+# OS & General IDEs
+# =========================
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# VS Code / IntelliJ
+.vscode/
+.idea/

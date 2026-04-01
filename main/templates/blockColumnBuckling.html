@@ -1,0 +1,186 @@
+{% extends "rootCloud.html" %}
+
+{% block contents %}
+<main class="main">
+    {% include "sideMenu.html" %}
+
+    <div class="fileImport">
+        <div class="fileImportContainer" style="width: 800px; max-width: 95%; height: auto; min-height: 600px; padding: 60px 50px 40px 50px; margin-top: 50px; margin-bottom: 50px;">
+
+            <a href="#none" onclick="openModal();" style="position: absolute; top: 25px; right: 25px;">프로그램 사용 가이드</a>
+
+            <h1 style="font-size: 1.8em; color: #002b5c; margin-top: 40px; margin-bottom: 10px; border: none;">기둥 좌굴 허용 하중 계산 (AISC)</h1>
+            <p style="margin-bottom: 35px; color: #666;">기둥의 제원 및 하중 조건을 입력하여 안전 사용 하중을 계산하세요.</p>
+
+            <form id="fileImportForm" action="/buckling/columnbuckling" method="POST">
+                <div class="input-group">
+                    <label for="safetyFactor">0) 사용하중 안전율 <span style="color: red">*</span></label>
+                    <input type="number" id="safetyFactor" name="safetyFactor" step="0.1" value="3.0" readonly
+                           style="background-color: #e9ecef; cursor: not-allowed;" required>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="memberSelect">1) 부재 선택 <span style="color: red">*</span></label>
+                    <select id="memberSelect" name="memberSelect" required>
+                        <optgroup label="H-형 단면">
+                            <option value="H200x200">H200x200</option>
+                            <option value="H200x204">H200x204</option>
+                            <option value="H295x302">H295x302</option>
+                            <option value="H300x300">H300x300</option>
+                            <option value="H300x305">H300x305</option>
+                        </optgroup>
+                        <optgroup label="Pipe 단면">
+                            <option value="150A PIPE (#40)">150A PIPE (#40)</option>
+                            <option value="150A PIPE (#60)">150A PIPE (#60)</option>
+                            <option value="200A PIPE (#40)">200A PIPE (#40)</option>
+                            <option value="200A PIPE (#60)">200A PIPE (#60)</option>
+                            <option value="250A PIPE (#40)">250A PIPE (#40)</option>
+                            <option value="250A PIPE (#60)">250A PIPE (#60)</option>
+                            <option value="300A PIPE" selected>300A PIPE</option>
+                            <option value="400A PIPE (#40)">400A PIPE (#40)</option>
+                            <option value="400A PIPE (#60)">400A PIPE (#60)</option>
+                        </optgroup>
+                        <optgroup label="I.A 단면">
+                            <option value="150 I.A (150x90x9/12)">150 I.A (150x90x9/12)</option>
+                            <option value="200 I.A (200x90x9/14)">200 I.A (200x90x9/14)</option>
+                            <option value="250 I.A (250x90x10/15)">250 I.A (250x90x10/15)</option>
+                        </optgroup>
+                        <optgroup label="I-형 단면">
+                            <option value="I400x150x12.5x25">I400x150x12.5x25</option>
+                            <option value="I350x150x12x24">I350x150x12x24</option>
+                            <option value="I350x150x9x15">I350x150x9x15</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="material">재질 <span style="color: red">*</span></label>
+                    <select id="material" name="material">
+                        <option value="MildSteel">Mild Steel (E: 210,000 MPa, Fy: 240 MPa)</option>
+                    </select>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="length">2) 기둥 길이 입력 [mm] <span style="color: red">*</span></label>
+                    <input type="number" id="length" name="length" step="1" value="4470" required>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="eccentricity">3) 편심량 [mm] <span style="color: red">*</span></label>
+                    <input type="number" id="eccentricity" name="eccentricity" step="0.1" value="20" readonly
+                           style="background-color: #e9ecef; cursor: not-allowed;" required>
+                </div>
+
+                <button type="submit" style="margin-top: 35px;">계산 실행</button>
+            </form>
+
+            {% if calculated %}
+            <div class="result-report" style="margin-top: 50px; border: 1px solid #dee2e6; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: left;">
+                <div style="background: #002b5c; color: #fff; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 1.1em; font-family: 'Noto Sans KR';">📊 해석 결과 리포트</h3>
+                    <span style="font-size: 0.85em; opacity: 0.8;">AISC Standard Based</span>
+                </div>
+
+                <div style="padding: 30px;">
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 25px; text-align: center; border: 1px solid #e9ecef; margin-bottom: 30px;">
+                        <p style="margin: 0; color: #6c757d; font-weight: 500; font-size: 14px;">최종 안전 사용 하중</p>
+                        <div style="margin-top: 8px;">
+                            <span style="font-size: 2.8em; font-weight: 700; color: #28a745;">{{ safe_load }}</span>
+                            <span style="font-size: 1.2em; font-weight: 600; color: #28a745; margin-left: 5px;">tonf</span>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                        <div>
+                            <p style="border-bottom: 2px solid #00d4ff; padding-bottom: 8px; font-weight: 700; color: #002b5c; margin-bottom: 12px; font-size: 15px;">Section Properties</p>
+                            <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                                <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; color: #666;">선택 부재</td><td style="text-align: right; font-weight: 600; color: #002b5c;">{{ member_name }}</td></tr>
+                                <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; color: #666;">단면적 (A)</td><td style="text-align: right; font-weight: 600;">{{ member_area }} mm²</td></tr>
+                                <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; color: #666;">관성모멘트 (I)</td><td style="text-align: right; font-weight: 600;">{{ member_inertia }} mm⁴</td></tr>
+                                <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; color: #666;">회전반경 (r)</td><td style="text-align: right; font-weight: 600;">{{ member_radius }} mm</td></tr>
+                            </table>
+                        </div>
+                        <div>
+                            <p style="border-bottom: 2px solid #00d4ff; padding-bottom: 8px; font-weight: 700; color: #002b5c; margin-bottom: 12px; font-size: 15px;">Design Condition</p>
+                            <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                                <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; color: #666;">기둥 길이 (L)</td><td style="text-align: right; font-weight: 600;">{{ member_length }} mm</td></tr>
+                                <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; color: #666;">단면계수 (Z)</td><td style="text-align: right; font-weight: 600;">{{ member_modulus }} mm³</td></tr>
+                                <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; color: #666;">탄성계수 (E)</td><td style="text-align: right; font-weight: 600;">{{ member_elastic }} MPa</td></tr>
+                                <tr style="border-bottom: 1px solid #eee;"><td style="padding: 10px 0; color: #666;">항복응력 (Fy)</td><td style="text-align: right; font-weight: 600;">{{ member_yield }} MPa</td></tr>
+                                <tr style="border-top: 1px solid #ddd; background-color: #fafbfc;"><td style="padding: 10px 5px; color: #002b5c; font-weight: bold;">편심량 (e)</td><td style="text-align: right; font-weight: 700; padding-right: 5px; color: #e74c3c;">{{ member_eccentricity }} mm</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+
+<div id="modal-backdrop" class="modal-backdrop"></div>
+<div id="modal-notice" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content">
+        <a href="#none" class="btn-close" onclick="closeModal();">×</a>
+        <div class="modal-body">
+            <h2 id="modalTitle" style="font-family: 'Noto Sans KR';">좌굴 계산기 사용 가이드</h2>
+            <p>1. <strong>부재 선택</strong>: 표준 규격 목록에서 원하는 부재를 선택합니다.</p>
+            <p>2. <strong>조건 입력</strong>: 기둥 길이를 정확히 입력하세요. (안전율 3.0, 편심 비율 20%는 고정값입니다.)</p>
+            <p>3. <strong>결과 확인</strong>: 계산 버튼을 누르면 AISC 기준에 따른 허용 하중 리포트가 생성됩니다.</p>
+            <a class="modal_close" href="#none" onclick="closeModal();" style="display: inline-block; margin-top: 15px;">창 닫기</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('modal-notice');
+        const backdrop = document.getElementById('modal-backdrop');
+
+        window.openModal = function() {
+            if (modal && backdrop) {
+                modal.classList.add('active');
+                backdrop.classList.add('active');
+            }
+        };
+
+        window.closeModal = function() {
+            if (modal && backdrop) {
+                modal.classList.remove('active');
+                backdrop.classList.remove('active');
+            }
+        };
+
+        if (backdrop) backdrop.addEventListener('click', closeModal);
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+        const menuButtons = document.querySelectorAll('.sidebar ul > li > a[role="button"]');
+        menuButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const parentLi = this.parentElement;
+                const submenuId = this.getAttribute('aria-controls');
+                const submenu = document.getElementById(submenuId);
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                document.querySelectorAll('.sidebar ul > li').forEach(li => {
+                    li.classList.remove('open');
+                    const link = li.querySelector('a[role="button"]');
+                    if(link) link.setAttribute('aria-expanded', 'false');
+                    const ul = document.getElementById(link?.getAttribute('aria-controls'));
+                    if(ul) ul.setAttribute('aria-hidden', 'true');
+                });
+
+                if (!isExpanded) {
+                    parentLi.classList.add('open');
+                    this.setAttribute('aria-expanded', 'true');
+                    if (submenu) submenu.setAttribute('aria-hidden', 'false');
+                }
+            });
+        });
+
+        const bucklingLink = document.querySelector('a[aria-controls="submenu-beam"]');
+        if (bucklingLink) bucklingLink.click();
+    });
+</script>
+{% endblock %}

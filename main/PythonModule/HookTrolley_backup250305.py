@@ -1,6 +1,5 @@
 from .hmNastran import hmNastranBDF_Importer, hmNastranBDF_Exporter, hmNastranOP2_Analyzer
 from pyNastran.bdf.case_control_deck import CaseControlDeck
-from .F06Parser import F06Parser
 import numpy as np
 import math
 from .CalcFunc import CalcFunc
@@ -11,7 +10,6 @@ from collections import defaultdict, deque
 import subprocess
 import sys
 import re
-
 
 class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
   def __init__(self, filename, export_bdf, liftingPoints, lineLength, Safety_Factor=1.0, lifting_method=0,
@@ -27,7 +25,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
     hmNastranBDF_Importer.__init__(self, self.filename)
     hmNastranBDF_Exporter.__init__(self, self.filename)
 
-    # Gravity = -1.0
+    Gravity = -1.0
     # Gravity 지정값 넣어주기
     with open(self.filename, 'r', encoding='utf-8') as f:
       for line in f:
@@ -43,6 +41,9 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
 
     self.Safety_Factor = Gravity
 
+ 
+    
+  
   def HookTrolleyRun(self):
 
     hmNastranBDF_Importer.run(self)
@@ -74,9 +75,9 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
     HookTrolley 위치 계산
     '''
     if self.lifting_method == 0:
-      self.HookLocationCalc(self.debugPrint)  # Hidro
+      self.HookLocationCalc(self.debugPrint) # Hidro
     else:
-      self.TrolleyLocationCalc(self.debugPrint)  # Gliat
+      self.TrolleyLocationCalc(self.debugPrint) # Gliat
     #############################
     '''
     # HookTrolley-
@@ -119,11 +120,15 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
     if self.analysis == True:
       self.Analysis(self.debugPrint)
 
+
     '''
     # HookTrolley-
     해석 결과 응력 정리, 반력의 경우에 음수가 나오면 위치를 잘못잡은거고 Trolley 는 평균 값을 쓰고, hook는 값 그대로 사용
     '''
     self.AssessmentResults()
+
+
+
 
   ## 함수 정의 부분 ########################
   def LiftingPointSetting(self, debugPrint):
@@ -195,12 +200,14 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
         print()
       print()
 
+
   def LiftingPointShapeDetecter(self, debugPrint):
     '''
     # HookTrolley-
     LiftingPoint들이 이루는 형태가 어떤 형태인지 확인, "4개 점 일직선", "4개 점 사각형", "3개 점", "2개 점"을 별도딕셔너리에 추가해준다.
     '''
     self.shapeDetectorDict = {}  # 딕셔너리로 key: SET번호, value : 형태 이렇게 생성
+
 
     def is_almost_line_in_direction(points, tolerance=0.1):
       # 모든 점 쌍 사이의 벡터를 계산합니다.
@@ -225,9 +232,11 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       else:
         return "None"
 
+
     def calculate_distance(p1, p2):
       # 두 점 사이의 유클리디안 거리를 계산합니다.
       return np.linalg.norm(np.array(p1) - np.array(p2))
+
 
     def is_quadrilateral(points):
       # 모든 점 쌍 사이의 거리를 계산합니다.
@@ -235,6 +244,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
                    range(i + 1, len(points))]
       # 볼록 4각형 조건을 검사합니다: 어떤 세 변의 길이 합이 나머지 한 변의 길이보다 커야 합니다.
       return all(sum(distances) - d > d for d in distances)
+
 
     for i, node_set in enumerate(self.HookTrolleyLiftingPoint_list):
       # 각 노드 세트에서 좌표를 추출합니다.
@@ -263,6 +273,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       for i in self.shapeDetectorDict.items():
         print(i)
       print()
+
 
   def LiftingPointVerifier(self, debugPrint):
     '''
@@ -297,10 +308,8 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
             if abs(max_Z - min_Z) > 100 or max_deg > 10:
               raise ValueError("Sling belt 네 점이 직사각형에 가깝지 않음")
 
-
           except ValueError as e:
-            # [수정 후 코드] "##" 제거 및 텍스트 간결화
-            self.ModuleUnitResultText_list.append("1. Unit Point 형태 유효성 확인 : Fail\n")
+            self.ModuleUnitResultText_list.append("## 1. Module Unit Point 형태 유효성 확인 : Fail\n")
             self.ModuleUnitResultText_list.append("Sling belt 네 점이 직사각형에 가깝지 않음\n\n")
             if debugPrint:
               print(f"오류 발생: {e}")
@@ -331,11 +340,11 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
           print(f"오류 발생: {e}")
           return
 
-    # [수정 후 코드] "##" 제거 및 텍스트 간결화
-    self.ModuleUnitResultText_list.append("1. Unit Point 형태 유효성 확인 : OK\n\n")
+    self.ModuleUnitResultText_list.append("## 1. Module Unit Point 형태 유효성 확인 : OK\n\n")
     if debugPrint:
       print("## 3단계 : 유닛 포인트 형태 유효성 확인 : 문제 없음 ")
       print()
+
 
   def HookLocationCalc(self, debugPrint):
     '''
@@ -409,7 +418,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
         vector_K = 0.5 * (vector_temp_list[0] + vector_temp_list[1])
         vector_1K = vector_K - vector_temp_list[0]
         vector_C = vector_K + 0.5 * ((np.inner(vector_13, vector_13) - np.inner(vector_13, vector_12)) / (
-                self.mag(np.cross(vector_13, vector_12)) ** 2)) * np.cross(vector_12, np.cross(vector_13, vector_12))
+            self.mag(np.cross(vector_13, vector_12)) ** 2)) * np.cross(vector_12, np.cross(vector_13, vector_12))
         k = np.cross(vector_13, vector_12)
         vector_1C = vector_C - vector_temp_list[0]
         value_s = self.mag(vector_1C)
@@ -442,6 +451,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
 
     print(f'## 계산된 권상 포인트 : {len(temp_list)}개 - {temp_list}')
     print('3단계 : ', self.HookTrolleyLocation)
+
 
   def TrolleyLocationCalc(self, debugPrint):
     self.HookTrolleyLocation = []
@@ -515,6 +525,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       print(f'{len(temp_list)}개 - {temp_list}')
       print()
 
+
   def HooktoCOG(self):
     '''
     # HookTrolley-
@@ -577,6 +588,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
           self.HookTrolleyLocation[1][0] = R[1]
           print(f'## 권상 포인트 2개 경우에서 기존의 {self.HookTrolleyLocation[1][0]}를 COG 근처 {R[1]}으로 이동')
 
+
   def Overturn(self, debugPrint):
     '''
     # HookTrolley-
@@ -585,10 +597,12 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
 
     self.TrolleyLocation_list = [list(array) for array in self.HookTrolleyLocation]
 
+
     # 필요 함수 정의
     def area_of_triangle(p1, p2, p3):
       """삼각형의 면적을 계산. 꼭지점이 주어지면 벡터의 외적을 사용해 면적을 계산."""
       return 0.5 * np.linalg.norm(np.cross(np.array(p2) - np.array(p1), np.array(p3) - np.array(p1)))
+
 
     def is_point_in_triangle(pt, tri):
       """점이 삼각형 내부에 있는지 판단. 삼각형의 꼭지점과 주어진 점으로 서브 삼각형을 만들어 면적을 비교."""
@@ -599,9 +613,11 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       area3 = area_of_triangle(p1, p2, pt)
       return np.isclose(main_area, area1 + area2 + area3)
 
+
     def is_point_in_rectangle(pt, rect):
       """점이 사각형 내부에 있는지 판단. 사각형을 두 개의 삼각형으로 나누어 각각을 검사."""
       return is_point_in_triangle(pt, rect[:3]) or is_point_in_triangle(pt, [rect[0], rect[2], rect[3]])
+
 
     def is_point_on_line(pt, line):
       """점이 직선 위에 있는지 판단. 두 점 사이의 거리와 각 점에서 주어진 점까지의 거리의 합을 비교."""
@@ -611,9 +627,11 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       dist2 = np.linalg.norm(np.array(pt) - np.array(p2))
       return np.isclose(total_dist, dist1 + dist2)
 
+
     def extract_xy(point):
       """3D 좌표에서 X와 Y 좌표를 추출."""
       return [point[0], point[1]]
+
 
     TrolleyLocation_list_2D = [extract_xy(point) for point in self.TrolleyLocation_list]
     COG_point_2D = extract_xy([self.COG_dict['X'], self.COG_dict['Y'], self.COG_dict['Z']])
@@ -631,19 +649,18 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       if not result:
         raise ValueError("## 주어진 권상 위치에서 전도가 발생")
 
-
     except ValueError as e:
       print(str(e))
-      # Fail인 경우에도 리포트에서 누락되지 않고 출력되도록 텍스트를 추가합니다.
-      self.ModuleUnitResultText_list.append("2. 자세 안정성 평가 : Fail\n")
-      self.ModuleUnitResultText_list.append(f"   사유: {str(e).replace('## ', '')}\n\n")
       return
-    self.ModuleUnitResultText_list.append("2. 자세 안정성 평가 : OK\n\n")
+
+    self.ModuleUnitResultText_list.append("## 2. Modult Unit 자세 안정성 평가 \n")
+    self.ModuleUnitResultText_list.append("- 해당 Unit Point에서 자세 안정성 평가 : OK \n\n")
 
     if debugPrint:
       print("## 5단계 : 자세 안전성 평가")
       print("해당 유닛 포인트에서 자세 안전성 평가 완료 : 문제 없음")
       print()
+
 
   def TrolleyLiftingPointSplitter(self, debugPrint):
     '''
@@ -651,6 +668,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
     Trolley의 경우에 LiftingPoint를 900mm간격으로 별려준다.
     '''
     self.TrolleyLocation_list = [list(array) for array in self.HookTrolleyLocation]
+
 
     # Trolley LiftingPoint를 벌리는 방향을 결정하는 함수 선언
     def determine_direction():
@@ -661,6 +679,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       else:
         direction = 'X'
       return direction
+
 
     direction = determine_direction()
 
@@ -735,11 +754,13 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       print(f'=> Trolley 해석으로 권상 포인트 {len(self.HookTrolleyLiftingPoint_list)}개로 수정')
       print()
 
+
   def Pipe_SPCSetter(self, debugPrint):
     '''
     # HookTrolley-
     배관에서 RBE 중에 1번 경계 조건이 없는 경우 날라가므로, 배관에 1번이 하나라도 없으면 무게 중심에 가까운 Node에 SPC설정
     '''
+
 
     def create_node_to_elements_map(elements_dict, rigid_dict):
       """
@@ -768,6 +789,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
 
       return node_to_elements_map
 
+
     def find_connected_elements(start_elem_id, elements_dict, rigid_dict, node_to_elements):
       """
       시작 요소에서 연결된 모든 요소들과 RBE를 찾아서 반환합니다.
@@ -794,6 +816,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
             queue.extend(node_to_elements[node_id] - visited)
       return visited
 
+
     def group_elements(elements_dict, rigid_dict):
       """
       모든 요소와 RBE를 연결된 그룹으로 분류합니다.
@@ -806,7 +829,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       for elem_id in elements_dict:
         propertyID = elements_dict[elem_id]['PropertyID']
         if elem_id not in visited_elements and elements_dict[elem_id]['PropertyID'] >= 100 and \
-                self.property_dict[propertyID]['Section'] == 'TUBE':
+            self.property_dict[propertyID]['Section'] == 'TUBE':
           connected_group = find_connected_elements(elem_id, elements_dict, rigid_dict, node_to_elements)
           if len(connected_group) > 1:  # 그룹의 크기가 1보다 큰 경우에만 추가
             element_groups.append(connected_group)
@@ -820,6 +843,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
             visited_elements.update(connected_group)
 
       return element_groups
+
 
     def find_rigid_pipeTopipe(rigid_dict):
       rigid_nodes_dict = {}  # rigid를 구성하는 node 들울 ind, dep 무관하게 리스트로 묶어 딕셔너리에 모은다.
@@ -847,6 +871,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
 
       return rigid_nodes_dict, pipeTopipe_rigid_list
 
+
     # 두 벡터 사이의 각도를 계산하는 함수
     def angle_between_vectors(v1, v2):
       unit_v1 = v1 / np.linalg.norm(v1)
@@ -854,6 +879,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       dot_product = np.dot(unit_v1, unit_v2)
       angle = np.arccos(dot_product)
       return np.degrees(angle)
+
 
     rigid_nodes_dict, find_rigid_pipeTopipe_list = find_rigid_pipeTopipe(self.rigid_dict)
 
@@ -870,7 +896,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
           for ele in s:  # 하나의 그룹에서 요소만 가지고 와서
             if ele not in self.rigid_dict.keys():  # 그룹에는 부재와 rigid가 같이 들어있기에 부재만 선택하는 것
               if rigid_nodes_dict[rigid][0] in self.elements_dict[ele]['NodesID'] or rigid_nodes_dict[rigid][1] in \
-                      self.elements_dict[ele]['NodesID']:  # 서포트와 배관을 연결하는 rigid가 어느 그룹에 속해있는지 판단하기
+                  self.elements_dict[ele]['NodesID']:  # 서포트와 배관을 연결하는 rigid가 어느 그룹에 속해있는지 판단하기
                 all_node_ids = [node_id for element in self.elements_dict.values() for node_id in element['NodesID']]
                 if rigid_nodes_dict[rigid][0] in all_node_ids and rigid_nodes_dict[rigid][1] in all_node_ids:
                   temp_set.add(rigid)
@@ -907,6 +933,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
     if debugPrint:
       print('## 6단계 - 1 : Pipe와 RBE의 그룹들 중에서 1번 자유도 없다면 추가')
       print(f'경계조건 추가 Node: {self.SPC_AddNode_Pipe}')
+
 
   def COG_SPCSetter(self, debugPrint):
     '''
@@ -954,6 +981,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
         print('## 6단계 - 2 : 유닛 무게중심 Node에 12 방향 경계조건 추가 ')
         print(f'경계조건 추가 Node: {self.SPC_AddNode_HL}')
         print()
+
 
   def BDF_Exporter(self):
     '''
@@ -1055,7 +1083,9 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       # new_spc = [1, i, self.SPC_direction, '0.0']  # SPC의 id는 1로 통일
       self.addNewSPC(new_spc)
 
+
     self.exportBDF(self.new_bdf)
+
 
   def BDF_InfogetEdit(self, debugPrint):
     NewBDF = []
@@ -1066,7 +1096,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       for lineidx in range(len(lines)):
         if not PBEAML_tag:
           line_split = [lines[lineidx][0:8], lines[lineidx][8:16], lines[lineidx][16:24], lines[lineidx][24:32],
-                        lines[lineidx][32:40], lines[lineidx][40:48], lines[lineidx][48:56], lines[lineidx][56:64]]
+                        lines[lineidx][32:40], lines[lineidx][40:48], lines[lineidx][48:56], lines[lineidx][56:64] ]
           if 'PROD' in lines[lineidx] and '$$' not in lines[lineidx]:
             NewBDF.append(lines[lineidx])
           # line_split = lines[lineidx].split()
@@ -1112,7 +1142,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
             BDFtext = f'{line_split[0]:<8}{line_split[1]:>8}{line_split[2]:>8}{"9800.0":>8}{"0.0":>8}{"0.0":>8}{float(self.Safety_Factor):>8}\n'
             NewBDF.append(BDFtext)
           elif 'SPC' in lines[lineidx] and 'FORCES' not in lines[lineidx] and '$' not in lines[lineidx] and '=' not in \
-                  lines[lineidx]:
+              lines[lineidx]:
             BDFtext = f'{line_split[0]:<8}{line_split[1]:>8}{line_split[2]:>8}{line_split[3]:>8}{float(line_split[4]):>8}\n'
             NewBDF.append(BDFtext)
 
@@ -1147,6 +1177,7 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
       print("출력 BDF 주소 : ", self.new_bdf)
       print()
 
+
   def Analysis(self, debugPrint):
     analysis_folder = os.path.dirname(self.new_bdf)
     os.chdir(analysis_folder)
@@ -1168,148 +1199,95 @@ class HookTrolley(hmNastranBDF_Importer, hmNastranBDF_Exporter, CalcFunc):
         print("Module Unit 해석 오류 발생")
     print()
 
-  @staticmethod
-  def ExtractFatalErrors(f06_filepath, context_lines=10):
-    """
-    <summary>
-    .f06 파일에서 'FATAL' 문자열을 찾아 전후 문맥을 파싱하여 리스트로 반환합니다.
-    </summary>
-    <param name="f06_filepath">파싱할 f06 파일 경로</param>
-    <param name="context_lines">에러 발생 위치 기준 전후로 추출할 줄 수</param>
-    <returns>파싱된 에러 메시지 문자열 리스트</returns>
-    """
-    if not os.path.exists(f06_filepath):
-      return ["f06 파일이 존재하지 않아 에러 내역을 파싱할 수 없습니다.\n"]
-
-    extracted_lines = []
-    try:
-      with open(f06_filepath, 'r', encoding='utf-8', errors='ignore') as f:
-        lines = f.readlines()
-
-      for i, line in enumerate(lines):
-        if 'FATAL' in line.upper():
-          start_idx = max(0, i - context_lines)
-          end_idx = min(len(lines), i + context_lines + 1)
-
-          extracted_lines.append(f"\n{'=' * 50}\n")
-          extracted_lines.append(f" FATAL ERROR DETECTED (Line {i + 1}) \n")
-          extracted_lines.append(f"{'=' * 50}\n")
-
-          for j in range(start_idx, end_idx):
-            extracted_lines.append(lines[j])
-
-          extracted_lines.append(f"{'=' * 50}\n\n")
-
-      if not extracted_lines:
-        extracted_lines.append("f06 파일 내에 'FATAL' 문자열이 발견되지 않았습니다.\n")
-
-    except Exception as e:
-      extracted_lines.append(f"f06 파일 파싱 중 오류 발생: {str(e)}\n")
-
-    return extracted_lines
 
   def AssessmentResults(self):
-    """
-    <summary>
-    Nastran 해석 결과를 분석하고 평가 보고서를 생성합니다.
-    (요청된 after.txt 포맷에 맞춰 ton 환산 및 최상단 종합 결과를 추가했습니다.)
-    </summary>
-    """
     op2_file = os.path.join(os.getcwd(), self.op2_path)
-    f06_file = self.new_bdf.replace('.bdf', '.f06')
-    self.ResultTxt = self.new_bdf.replace('.bdf', '.txt')
 
-    # 1. 해석 성공: OP2 파일이 존재하는 경우
     if os.path.exists(op2_file):
       self.op2Results = hmNastranOP2_Analyzer(op2_file)
       self.op2Results.resultsSetting()
-
       displacement_sorted = self.op2Results.disp_results[0].sort_values(by='disp', ascending=False).head(1)
       stress_sorted = self.op2Results.stress1D_results[0].sort_values(by='Stress', ascending=False).head(1)
+      # DisplacementDF = self.op2Results.disp_results[0][:5]
+      # self.isExcessiveXDisplacement = False
+      # isExcessiveZDisplacement = False
+      # self.SPC_direction = None
+      isErrorROD = False
       ELForceROD_df = self.op2Results.ELForceROD_results[0]
 
-      isErrorROD = False
-      if (ELForceROD_df['Axial_Force'] < 0).any():
-        isErrorROD = True
-        print('ROD의 Axial이 음수가 존재하므로 권상 위치를 잘못 설정하였음')
+    if (ELForceROD_df['Axial_Force'] < 0).any():
+      isErrorROD = True
+      print('ROD의 Axial이 음수가 존재하므로 권상 위치를 잘못 설정하였음')  # 이때 에러 발생 시킴
 
-      # Trolley의 경우 그룹의 Axial force 평균값 적용
-      if self.lifting_method == 1:
-        for group in self.rod_group_list:
-          avg_axial_force = ELForceROD_df[ELForceROD_df['Element'].isin(group)]['Axial_Force'].mean()
-          ELForceROD_df.loc[ELForceROD_df['Element'].isin(group), 'Axial_Force'] = avg_axial_force
+    if self.lifting_method == 1:  # Trolley의 경우 그룹의 Axial force의 평균값을 사용
+      # rod_group_list에서 각 그룹의 Axial_Force 평균값 계산 및 업데이트
+      for group in self.rod_group_list:
+        # 그룹 내 요소들의 Axial_Force 평균값 계산
+        avg_axial_force = ELForceROD_df[ELForceROD_df['Element'].isin(group)]['Axial_Force'].mean()
 
-      # 변위 및 응력 평가 지표 산출
-      disp = round(float(displacement_sorted['disp'].iloc[0]), 1)
-      Element = round(int(stress_sorted['Element'].iloc[0]), 1)
-      Stress = round(float(stress_sorted['Stress'].iloc[0]), 1)
-      SafetyFactor = round((220.0 / Stress), 1)
+        # 해당 요소들의 Axial_Force 값을 평균값으로 업데이트
+        ELForceROD_df.loc[ELForceROD_df['Element'].isin(group), 'Axial_Force'] = avg_axial_force
 
-      # Pass 대신 명시적인 OK 사용 (after.txt 요구사항)
-      AssessmentResult = "OK" if SafetyFactor > 1 else "Fail"
+    disp = displacement_sorted['disp']
+    Element = stress_sorted['Element']
+    Stress = stress_sorted['Stress']
 
-      self.ModuleUnitResultText_list.append(f"3. 구조 안정성 평가 : {AssessmentResult}\n")
-      self.ModuleUnitResultText_list.append(f"   1) 최대 변형 : {disp}mm \n")
-      self.ModuleUnitResultText_list.append(f"   2) 응력 평가 (항복응력 : 275MPa 허용응력 : 항복응력 x 0.8 = 220MPa) \n")
-      self.ModuleUnitResultText_list.append(f"     ElementID:{' ':>8}{Element:<10}\n")
-      self.ModuleUnitResultText_list.append(f"     Stress:{' ':>11}{Stress}MPa\n")
-      self.ModuleUnitResultText_list.append(f"     SafetyFactor:{' ':>5}{SafetyFactor:<10}\n\n")
-
-      # wire 고유 번호를 추출
-      pattern = r'^\$\$([^\s]+)\s+(\d+)\s+(\d+)'
-      wire_results = []
-      with open(self.filename, 'r', encoding='utf-8') as f:
-        for line in f:
-          match = re.match(pattern, line.strip())
-          if match:
-            key = match.group(1)
-            wire_results.append(key)
-
-      self.ModuleUnitResultText_list.append(f"3. 장력 평가 (안전하중 : 6.2 ton / 60,760 N) \n")
-      for idx, row in ELForceROD_df.iterrows():
-        element_id = int(row['Element'])
-        axial_force = round(float(row['Axial_Force']), 2)
-
-        # N(뉴턴)을 ton으로 환산 (중력가속도 9800.0 기준)
-        ton_force = round(axial_force / 9800.0, 2)
-        force_str = f"{ton_force:.2f}ton / {axial_force}"
-
-        wire_assessment = " 국부 변형 방지 지그 불필요" if axial_force < 60760 else " 국부 변형 방지 지그 필요"
-
-        # 인덱스 오류 방지 (안전 장치)
-        wire_key = wire_results[idx] if idx < len(wire_results) else f"Wire-{idx}"
-        self.ModuleUnitResultText_list.append(
-          f"{wire_key:<10}{element_id:<10}{force_str:<25}{wire_assessment:<20}\n"
-        )
-
-      print('## 9단계 : Module Unit 해석 완료  ')
-
-    # 2. 해석 실패: OP2 파일이 없는 경우 (FATAL 처리)
+    disp = round(float(disp.iloc[0]), 1)
+    Element = round(int(Element.iloc[0]), 1)
+    Stress = round(float(Stress.iloc[0]), 1)
+    SafetyFactor = round((220.0 / Stress), 1)
+    if SafetyFactor > 1:
+      AssessmentResult = "Pass"
     else:
-      print("## 에러: op2 파일이 생성되지 않았습니다. f06 파일에서 FATAL 내역을 파싱합니다.")
-      self.ModuleUnitResultText_list.append("NASTRAN 해석 실패 (FATAL ERROR 발생)\n")
+      AssessmentResult = "Fail"
 
-      fatal_messages = self.ExtractFatalErrors(f06_file, context_lines=10)
-      self.ModuleUnitResultText_list.extend(fatal_messages)
+    self.ModuleUnitResultText_list.append(f"## 3. 구조 안정성 평가 \n")
+    self.ModuleUnitResultText_list.append(f"{'1) 최대 변형 : ':<10}{disp}mm \n")
+    self.ModuleUnitResultText_list.append(f"{'2) 응력 평가 (항복응력 : 275MPa 허용응력 : 항복응력 x 0.8 = 220MPa) ':<20}\n")
+    self.ModuleUnitResultText_list.append(f"{'  ElementID:':<20}{Element:<10}\n")
+    self.ModuleUnitResultText_list.append(f"{'  Stress:':<20}{Stress}MPa\n")
+    self.ModuleUnitResultText_list.append(f"{'  SafetyFactor:':<20}{SafetyFactor:<10}\n")
+    self.ModuleUnitResultText_list.append(f"{'  AssessmentResult:':<20}{AssessmentResult:<10}\n\n")
+    
+    # wire 고유 번호를 가지고 오기 위한 과정 (예 1-1..)
+    pattern = r'^\$\$([^\s]+)\s+(\d+)\s+(\d+)'
+    wire_results = []
+    with open(self.filename, 'r', encoding='utf-8') as f:
+      for line in f:
+        match = re.match(pattern, line.strip())
+        if match:
+          key = match.group(1)
+          # num1 = int(match.group(2))  # 예: 118
+          # num2 = int(match.group(3))  # 예: 8
+          wire_results.append(key)
+    
+    self.ModuleUnitResultText_list.append(f"## 4. 장력 평가 (안전하중 : 60,760N) \n")
+    for idx, row in ELForceROD_df.iterrows():
+      element_id = int(row['Element'])
+      axial_force = round(float(row['Axial_Force']), 2)
+      if axial_force < 60760:
+        wire_assessment = " 국부 변형 방지 지그 불필요"
+      else:
+        wire_assessment = " 국부 변형 방지 지그 필요"
+      self.ModuleUnitResultText_list.append(
+        f"{wire_results[idx]:<10}{element_id:<10}{axial_force:<10}{wire_assessment:<20}\n"
+      )
 
-    # ==========================================
-    # 3. 최상단 종합 결과 판별 로직 및 파일 저장
-    # ==========================================
-    overall_status = "OK"
-    for text in self.ModuleUnitResultText_list:
-      if "Fail" in text or "FATAL" in text:
-        overall_status = "Fail"
-        break
+    self.ResultTxt = self.new_bdf.replace('.bdf', '.txt')
 
-    # 최상단(Index 0)에 종합 결과 삽입
-    self.ModuleUnitResultText_list.insert(0, f"*** 결과 : {overall_status} ***\n\n")
-
-    # 결과 텍스트 파일 저장
     with open(self.ResultTxt, 'w', encoding='utf8') as f:
       for text in self.ModuleUnitResultText_list:
-        f.write(text)
+        f.write(text)  # 각 텍스트 뒤에 개행 문자를 추가하여 파일에 씁니다.
 
-
+    print('## 9단계 : Module Unit 해석 완료  ')
+    print('Displacement 결과')
+    print(displacement_sorted)
+    print('---------------------------------')
+    print('1D Stress 결과')
+    print(stress_sorted)
+    print('---------------------------------')
+    print('Rod에 걸리는 반력 추출')
+    print(ELForceROD_df)
 
 
 # 인포겟 프로그램에서 출력된 bdf 파일에서 해석에 필요한 요소들을 추출해내는 메써드
@@ -1353,7 +1331,6 @@ def InforgetMode(inforgetBDF):
 
   return inforgetBDF, ModuleInfo_list, lineLength_list, lifting_method
 
-
 # 실행 코드
 def main():
   try:
@@ -1374,9 +1351,10 @@ def main():
       f.write(f"변경 output: {export_bdf}\n")
       f.write(f"변경 cwd: {os.getcwd()}\n")
 
+
     try:
       ht = HookTrolley(bdf, export_bdf, HookTrolley_list, lineLength,
-                       Safety_Factor=-1.2, lifting_method=lifting_method,
+                       Safety_Factor=Gravity, lifting_method=lifting_method,
                        analysis=True, debugPrint=True)
       ht.HookTrolleyRun()
     except Exception as e:
